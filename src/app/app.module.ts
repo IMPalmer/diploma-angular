@@ -12,7 +12,8 @@ import { HeaderComponent } from './components/navigation/header/header.component
 import { SidenavListComponent } from './components/navigation/sidenav-list/sidenav-list.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SignUpComponent } from './components/sign-up/sign-up.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     HeaderComponent,
     SidenavListComponent,
     HomeComponent,
-    LoginComponent
+    LoginComponent,
+    SignUpComponent
   ],
   imports: [
     BrowserModule,

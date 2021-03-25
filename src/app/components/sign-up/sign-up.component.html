@@ -1,0 +1,66 @@
+<div fxFlex="100%" fxFlex.lt-md="100%" xmlns="http://www.w3.org/1999/html">
+  <section fxLayout="row wrap" fxLayoutAlign="center center">
+
+    <div class="logo-sign-up">
+      <img src="assets/logo_sign-up.png" fxHide.xs><br>
+      If you already have an account click on <a routerLink="/login" >Sign in</a>
+    </div>
+
+    <mat-card fxFlex="40vmax" fxFlex.xs="100%" fxFlexAlign="center">
+      <mat-card-title>Sign up</mat-card-title>
+      <form  autocomplete="off" novalidate fxLayout="column wrap"
+           fxLayoutAlign="center center" fxLayoutGap="10px" [formGroup]="registrationFormGroup">
+
+        <mat-card-content fxLayoutAlign="stretch" fxLayout="column">
+
+          <mat-form-field appearance="outline">
+            <mat-label>Enter your first name</mat-label>
+            <input matInput type="text" formControlName="firstName">
+            <mat-error *ngIf="hasError('firstName', 'required')">First name is required</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Enter your last name</mat-label>
+            <input matInput type="text" formControlName="lastName">
+            <mat-error *ngIf="hasError('lastName', 'required')">Last name is required</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Enter email</mat-label>
+            <input matInput placeholder="example@example.com" formControlName="email">
+            <mat-error *ngIf="hasError('email', 'required')">Email is required</mat-error>
+            <mat-error *ngIf="hasError('email', 'email')">Invalid email address</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Enter password</mat-label>
+            <input matInput [type]="hideFirstPassword ? 'password' : 'text'" formControlName="password">
+            <mat-error *ngIf="hasError('password', 'required')">Password is required</mat-error>
+            <button mat-icon-button matSuffix (click)="hideFirstPassword =! hideFirstPassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideFirstPassword">
+              <mat-icon>{{hideFirstPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Enter password again</mat-label>
+            <input matInput [type]="hideSecondPassword ? 'password' : 'text'" formControlName="confirmedPassword">
+            <mat-error *ngIf="hasError('confirmedPassword', 'required')">Password is required</mat-error>
+            <mat-error *ngIf="registrationFormGroup.controls.confirmedPassword.touched &&
+             registrationFormGroup.controls.confirmedPassword.errors?.passwordMismatch">Password mismatch</mat-error>
+            <button mat-icon-button matSuffix (click)="hideSecondPassword =! hideSecondPassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideSecondPassword">
+              <mat-icon>{{hideSecondPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+          </mat-form-field>
+
+        </mat-card-content>
+
+        <mat-card-actions align="center">
+          <button mat-raised-button type="submit" color="primary"
+                  routerLink="/home" [disabled]="!registrationFormGroup.valid" (click)="onSignUp()">Sign up</button>
+        </mat-card-actions>
+
+      </form>
+    </mat-card>
+
+  </section>
+</div>

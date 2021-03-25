@@ -1,15 +1,30 @@
+mat-toolbar {
+  background: #33CCCC;
+  border-radius: 0 0 1em 1em;
+}
 a {
   text-decoration: none;
   color: white;
+  margin-left: 5px;
+}
+a.logout {
+  padding: 4px;
+  border: 1px solid whitesmoke;
+  border-radius: 8px;
 }
 a:hover, a:active{
   color: lightgray;
+}
+a.sign-up:hover, a.sign-up:active{
+  color: lightgray;
+  border: 1px solid lightgray;
 }
 .navigation-items{
   list-style-type: none;
   padding: 0;
   margin: 0;
 }
-mat-toolbar{
-  border-radius: 3px;
+img {
+  width: 10vmin;
+  margin-top: 2vmin;
 }

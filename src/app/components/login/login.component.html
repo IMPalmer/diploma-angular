@@ -1,19 +1,25 @@
-<section fxLayout="row wrap" fxLayoutAlign="center center">
-  <mat-card fxFlex="500px" fxFlex.xs="100%">
+<section fxLayout="column wrap" fxLayoutAlign="center center">
+
+  <div class="logo-sign-in">
+    Hello dear user! <img src="assets/logo_sign-in.png"><br>
+  </div>
+
+  <mat-card fxFlex="20vmax" fxFlex.xs="100%">
     <mat-card-title>Sign in</mat-card-title>
     <form  autocomplete="off" novalidate fxLayout="column wrap"
-          fxLayoutAlign="center center" fxLayoutGap="10px" [formGroup]="formGroup"
-           (ngSubmit)="loginProcess(formGroup.value)">
+          fxLayoutAlign="center center" fxLayoutGap="10px" [formGroup]="loginFormGroup"
+           (ngSubmit)="loginProcess(loginFormGroup.value)">
 
       <mat-card-content fxLayoutAlign="stretch" fxLayout="column">
 
-        <mat-form-field appearance="fill">
-          <mat-label>login</mat-label>
-          <input matInput type="text" formControlName="login">
-          <mat-error *ngIf="hasError('login', 'required')">Login is required</mat-error>
+        <mat-form-field appearance="standard">
+          <mat-label>email</mat-label>
+          <input matInput placeholder="example@example.com" formControlName="email">
+          <mat-error *ngIf="hasError('email', 'required')">Email is required</mat-error>
+          <mat-error *ngIf="hasError('email', 'email')">Invalid email address</mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="standard">
           <mat-label>password</mat-label>
           <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
           <mat-error *ngIf="hasError('password', 'required')">Password is required</mat-error>
@@ -25,8 +31,8 @@
       </mat-card-content>
 
       <mat-card-actions align="center">
-        <button mat-raised-button type="submit" color="primary">Login</button>
-        <button type="button" mat-raised-button color="warn">Sign up</button>
+        <button mat-raised-button type="submit" color="primary" [disabled]="!loginFormGroup.valid">Login</button>
+        <button type="button" mat-raised-button routerLink="/sign-up">Sign up</button>
       </mat-card-actions>
 
     </form>

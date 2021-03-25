@@ -1,21 +1,22 @@
-mat-form-field{
-  width: 60vmin;
+mat-form-field {
+  width: 75vmin;
   margin-top: 0.2rem;
 }
-mat-card-title{
+mat-card-title {
   font-family: 'slimamif', 'arial', sans-serif;
   font-weight: bold;
   text-align: center;
 }
-mat-card{
-  margin-top: 1.5rem;
+mat-card {
+  margin-top: 1.2rem;
+  margin-bottom: 1.2rem;
 }
-img {
-  width: 20%
+button {
+  width: 75vmin;
 }
-.logo-sign-in {
+.logo-sign-up {
   font-family: 'slimamif', 'arial', sans-serif;
   font-weight: bold;
   text-align: center;
-  font-size: xx-large;
+  font-size: medium;
 }

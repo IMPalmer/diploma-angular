@@ -1,0 +1,17 @@
+section{
+  font-family: 'slimamif', 'arial', sans-serif;
+  font-weight: bold;
+  text-align: center;
+  width: 98%;
+}
+p{
+  text-decoration: none;
+  color: #009999;
+  font-size: xx-large;
+  margin-top: 3vh;
+  margin-bottom: 3vh;
+}
+mat-grid-tile{
+  border-radius: 2vmax;
+  border: 1px solid #5CCCCC;
+}

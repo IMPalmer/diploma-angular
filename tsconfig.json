@@ -8,7 +8,9 @@
       "@services/*" :
       ["src/app/shared/services/*"],
       "@models/*" :
-      ["src/app/shared/models/*"]
+      ["src/app/shared/models/*"],
+      "@directives/*" :
+      ["src/app/shared/directives/*"]
     },
     "outDir": "./dist/out-tsc",
     "sourceMap": true,

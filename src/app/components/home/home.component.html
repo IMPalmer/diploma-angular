@@ -1,3 +1,23 @@
-<section fxLayout="center center" fxFlexFill>
-  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi, quis.</p>
-</section>
+<app-layout>
+  <section>
+    <p>Hello, there are some functionality you can get...</p>
+    <mat-grid-list cols="4" fxHide.xs>
+      <mat-grid-tile
+        *ngFor="let tile of tiles"
+        [colspan]="tile.cols"
+        [rowspan]="tile.rows"
+        [style.background]="tile.color">
+        {{tile.text}}
+      </mat-grid-tile>
+    </mat-grid-list>
+    <mat-grid-list cols="4" fxHide.gt-xs>
+      <mat-grid-tile
+        *ngFor="let tile of tilesMobile"
+        [colspan]="tile.cols"
+        [rowspan]="tile.rows"
+        [style.background]="tile.color">
+        {{tile.text}}
+      </mat-grid-tile>
+    </mat-grid-list>
+  </section>
+</app-layout>
