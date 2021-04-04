@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { CustomValidationService } from '@services/custom-validation.service';
-import { RegistrationModel } from '@models/registration';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {CustomValidationService} from '@services/custom-validation.service';
+import {RegistrationModel} from '@models/registration';
+import {UserModel} from '@models/user';
+import {AuthService} from '@services/auth.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-sign-up',
@@ -13,8 +16,10 @@ export class SignUpComponent implements OnInit {
   registrationFormGroup: FormGroup;
   hideFirstPassword = true;
   hideSecondPassword = true;
+  user: UserModel;
 
-  constructor(private customValidator: CustomValidationService) { }
+  constructor(private customValidator: CustomValidationService,
+              private auth: AuthService, private router: Router) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -25,7 +30,8 @@ export class SignUpComponent implements OnInit {
       firstName: new FormControl('', [Validators.required]),
       lastName: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [Validators.required] ),
+      password: new FormControl('',
+        [Validators.required, Validators.minLength(6), Validators.maxLength(50)] ),
       confirmedPassword: new FormControl('', [Validators.required])
     }, {validators: this.customValidator.MatchPassword('password', 'confirmedPassword')});
   }
@@ -34,12 +40,29 @@ export class SignUpComponent implements OnInit {
     return this.registrationFormGroup.controls[controlName].hasError(errorName);
   }
 
-  onSignUp = () => {
-    const registeredUser: RegistrationModel = {
-      email: this.registrationFormGroup.controls.email.value,
-      password: this.registrationFormGroup.controls.password.value,
-      firstName: this.registrationFormGroup.controls.firstName.value,
-      lastName: this.registrationFormGroup.controls.lastName.value
+  registrationProcess = (formGroupValue) => {
+    if (this.registrationFormGroup.valid) {
+      this.auth.registration(this.executeRegistrationForm(formGroupValue)).subscribe(
+        (data: UserModel) => {
+          localStorage.setItem('currentUser', JSON.stringify(this.user = data));
+          this.router.navigateByUrl('/home').then(e => {
+            if (e) {
+              console.log('Navigation is successful');
+            } else {
+              console.log('Navigation has failed');
+            }
+          });
+        }
+      );
+    }
+  }
+
+  executeRegistrationForm(formGroupValue): RegistrationModel {
+    return {
+      email: formGroupValue.email,
+      password: formGroupValue.password,
+      firstName: formGroupValue.firstName,
+      lastName: formGroupValue.lastName
     };
   }
 

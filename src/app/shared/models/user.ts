@@ -1,8 +1,9 @@
 export interface UserModel {
+  id: number;
   email: string;
   firstName: string;
   lastName: string;
-  creationDateTime: Date;
+  createDateTime: Date;
   accessToken: string;
   refreshToken: string;
 }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '@services/auth.service';
 import { Router } from '@angular/router';
+import { UserModel } from '@models/user';
 
 @Component({
   selector: 'app-login',
@@ -12,6 +13,7 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
 
   loginFormGroup: FormGroup;
+  user: UserModel;
   hide = true;
 
   constructor(private auth: AuthService, private router: Router) {
@@ -24,7 +26,8 @@ export class LoginComponent implements OnInit {
   initForm = () => {
     this.loginFormGroup = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [Validators.required])
+      password: new FormControl('',
+        [Validators.required, Validators.minLength(6), Validators.maxLength(50)])
     });
   }
 
@@ -34,17 +37,18 @@ export class LoginComponent implements OnInit {
 
   loginProcess = (formGroupValue) => {
     if (this.loginFormGroup.valid) {
-      this.auth.login(formGroupValue.login, formGroupValue.password);
-      /*this.auth.login(this.executeUserCreation(formGroupValue));*/
+      this.auth.login(formGroupValue.email, formGroupValue.password).subscribe(
+        (data: UserModel) => {
+          localStorage.setItem('currentUser', JSON.stringify(this.user = data));
+          this.router.navigateByUrl('/home').then(e => {
+            if (e) {
+              console.log('Navigation is successful');
+            } else {
+              console.log('Navigation has failed');
+            }
+          });
+        }
+      );
     }
   }
-
-  /*executeUserCreation = (formGroupValue) => {
-   const user: User = {
-      id: '0',
-      login: formGroupValue.login,
-      password: formGroupValue.password
-    };
-   return user;
-  }*/
 }

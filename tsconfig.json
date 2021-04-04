@@ -10,7 +10,11 @@
       "@models/*" :
       ["src/app/shared/models/*"],
       "@directives/*" :
-      ["src/app/shared/directives/*"]
+      ["src/app/shared/directives/*"],
+      "@guards/*" :
+      ["src/app/shared/guards/*"],
+      "@interceptors/*" :
+      ["src/app/shared/interceptors/*"]
     },
     "outDir": "./dist/out-tsc",
     "sourceMap": true,

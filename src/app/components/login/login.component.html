@@ -1,7 +1,7 @@
 <section fxLayout="column wrap" fxLayoutAlign="center center">
 
   <div class="logo-sign-in">
-    Hello dear user! <img src="assets/logo_sign-in.png"><br>
+    Hello dear user! <img src="assets/logo_sign-in.png" alt="sign-in logo"><br>
   </div>
 
   <mat-card fxFlex="20vmax" fxFlex.xs="100%">
@@ -23,6 +23,10 @@
           <mat-label>password</mat-label>
           <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
           <mat-error *ngIf="hasError('password', 'required')">Password is required</mat-error>
+          <mat-error *ngIf="hasError('password', 'minlength')">
+            Password should be more than 6 characters</mat-error>
+          <mat-error *ngIf="hasError('password', 'maxlength')">
+            Password should be less than 50 characters</mat-error>
           <button mat-icon-button matSuffix (click)="hide =! hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
             <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
           </button>
