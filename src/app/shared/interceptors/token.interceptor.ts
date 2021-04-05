@@ -1,12 +1,12 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
   HttpInterceptor
 } from '@angular/common/http';
-import {Observable, ObservableInput, throwError} from 'rxjs';
-import {catchError, mergeMap} from 'rxjs/operators';
+import { Observable, ObservableInput, throwError } from 'rxjs';
+import { catchError, mergeMap } from 'rxjs/operators';
 import { AuthService } from '@services/auth.service';
 import { UserModel } from '@models/user';
 import { TokensPairModel } from '@models/tokens-pair';
@@ -14,23 +14,18 @@ import { TokensPairModel } from '@models/tokens-pair';
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
 
-  currentUser: UserModel = JSON.parse(localStorage.getItem('currentUser'));
-
-  checkTokens(): UserModel {
-    return JSON.parse(localStorage.getItem('currentUser'));
-  }
-
   constructor(private auth: AuthService) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
       catchError((err) => {
         if (err.status === 401) {
-          return this.auth.refresh(this.checkTokens().accessToken, this.checkTokens().refreshToken).pipe(
+          const currentUser: UserModel = this.auth.user;
+          return this.auth.refresh(currentUser.accessToken, currentUser.refreshToken).pipe(
             mergeMap( (data: TokensPairModel): ObservableInput<any> => {
-              this.currentUser.accessToken = data.accessToken;
-              this.currentUser.refreshToken = data.refreshToken;
-              localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
+              currentUser.accessToken = data.accessToken;
+              currentUser.refreshToken = data.refreshToken;
+              this.auth.user = currentUser;
               const cloneReq = request.clone({
                 setHeaders: {Authorization: 'Bearer ' + data.accessToken}
               });

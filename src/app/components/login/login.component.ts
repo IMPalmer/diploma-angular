@@ -13,7 +13,6 @@ import { UserModel } from '@models/user';
 export class LoginComponent implements OnInit {
 
   loginFormGroup: FormGroup;
-  user: UserModel;
   hide = true;
 
   constructor(private auth: AuthService, private router: Router) {
@@ -39,7 +38,7 @@ export class LoginComponent implements OnInit {
     if (this.loginFormGroup.valid) {
       this.auth.login(formGroupValue.email, formGroupValue.password).subscribe(
         (data: UserModel) => {
-          localStorage.setItem('currentUser', JSON.stringify(this.user = data));
+          this.auth.user = data;
           this.router.navigateByUrl('/home').then(e => {
             if (e) {
               console.log('Navigation is successful');

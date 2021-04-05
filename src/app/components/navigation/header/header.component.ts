@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter} from '@angular/core';
-import { UserModel } from '@models/user';
 import { AuthService } from '@services/auth.service';
 import { Router } from '@angular/router';
+import {UserModel} from '@models/user';
 
 @Component({
   selector: 'app-header',
@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 export class HeaderComponent implements OnInit {
 
   @Output() public sidenavToggle = new EventEmitter();
-  currentUser: UserModel = JSON.parse(localStorage.getItem('currentUser'));
+  currentUser: UserModel = this.auth.user;
 
   constructor(private auth: AuthService, private router: Router) { }
 
@@ -23,9 +23,9 @@ export class HeaderComponent implements OnInit {
   }
 
   logoutProcess = () => {
-    this.auth.logout(this.currentUser.accessToken).subscribe(
+    this.auth.logout().subscribe(
       () => {
-        localStorage.removeItem('currentUser');
+        this.auth.clearLocalStorage();
         this.router.navigateByUrl('/login').then(e => {
           if (e) {
             console.log('Navigation is successful');

@@ -16,7 +16,6 @@ export class SignUpComponent implements OnInit {
   registrationFormGroup: FormGroup;
   hideFirstPassword = true;
   hideSecondPassword = true;
-  user: UserModel;
 
   constructor(private customValidator: CustomValidationService,
               private auth: AuthService, private router: Router) { }
@@ -44,7 +43,7 @@ export class SignUpComponent implements OnInit {
     if (this.registrationFormGroup.valid) {
       this.auth.registration(this.executeRegistrationForm(formGroupValue)).subscribe(
         (data: UserModel) => {
-          localStorage.setItem('currentUser', JSON.stringify(this.user = data));
+          this.auth.user = data;
           this.router.navigateByUrl('/home').then(e => {
             if (e) {
               console.log('Navigation is successful');
