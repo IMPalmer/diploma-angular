@@ -11,10 +11,12 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { HeaderComponent } from './components/navigation/header/header.component';
 import { SidenavListComponent } from './components/navigation/sidenav-list/sidenav-list.component';
 import { HomeComponent } from './components/home/home.component';
-import { LoginComponent } from './components/login/login.component';
+import { SignInComponent } from './components/sign-in/sign-in.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { TokenInterceptor } from './shared/interceptors/token.interceptor';
+import { FooterComponent } from './components/navigation/footer/footer.component';
+import { DocAuthorsCertificateComponent } from './components/documents/doc-authors-certificate/doc-authors-certificate.component';
 
 @NgModule({
   declarations: [
@@ -23,8 +25,10 @@ import { TokenInterceptor } from './shared/interceptors/token.interceptor';
     HeaderComponent,
     SidenavListComponent,
     HomeComponent,
-    LoginComponent,
-    SignUpComponent
+    SignInComponent,
+    SignUpComponent,
+    FooterComponent,
+    DocAuthorsCertificateComponent
   ],
   imports: [
     BrowserModule,

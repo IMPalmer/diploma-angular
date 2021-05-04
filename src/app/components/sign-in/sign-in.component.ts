@@ -5,15 +5,16 @@ import { Router } from '@angular/router';
 import { UserModel } from '@models/user';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  selector: 'app-sign-in',
+  templateUrl: './sign-in.component.html',
+  styleUrls: ['./sign-in.component.css']
 })
 
-export class LoginComponent implements OnInit {
+export class SignInComponent implements OnInit {
 
   loginFormGroup: FormGroup;
   hide = true;
+  user: UserModel;
 
   constructor(private auth: AuthService, private router: Router) {
   }
@@ -37,7 +38,7 @@ export class LoginComponent implements OnInit {
   loginProcess = (formGroupValue) => {
     if (this.loginFormGroup.valid) {
       this.auth.login(formGroupValue.email, formGroupValue.password).subscribe(
-        (data: UserModel) => {
+        (data) => {
           this.auth.user = data;
           this.router.navigateByUrl('/home').then(e => {
             if (e) {

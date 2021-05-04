@@ -1,17 +1,17 @@
 <mat-toolbar>
-  <div fxHide.gt-xs>
+  <div>
     <button mat-icon-button (click)="onToggleSidenav()">
       <mat-icon>menu</mat-icon>
     </button>
   </div>
   <div>
-    <a routerLink="/home"> <img src="assets/logo.png"> </a>
+    <img src="assets/logo.png">
   </div>
   <div fxFlex fxLayout fxLayoutAlign="end" fxHide.xs>
     <ul fxLayout fxLayoutGap="15px" class="navigation-items">
       <li>
-        <a>{{currentUser.firstName}}</a>
-        <a class="logout" routerLink="/login" (click)="logoutProcess()">Logout</a>
+        <a class="user" routerLink="">{{currentUser.firstName}}</a>
+        <a class="logout" (click)="logoutProcess()">Logout</a>
       </li>
     </ul>
   </div>

@@ -1,0 +1,127 @@
+<app-layout>
+  <div class="text-another-document">
+    <h2>Choose another document</h2>
+    <a class="document" routerLink="/authors-certificate">Авторська довідка</a><br><br>
+    <a class="document" routerLink="/">Doc2</a><br><br>
+    <a class="document" routerLink="/">Doc3</a>
+  </div>
+
+  <mat-tab-group animationDuration="0ms" >
+    <mat-tab label="Input data">
+      <mat-vertical-stepper [linear]="false" #stepper>
+        <mat-step [stepControl]="authorsFormGroup">
+          <form [formGroup]="authorsFormGroup">
+            <ng-template matStepLabel>Додати авторів</ng-template>
+            <mat-form-field>
+              <mat-label>Автори</mat-label>
+              <mat-chip-list #chipList >
+                <mat-chip
+                  *ngFor="let author of authors"
+                  selectable removable
+                  (removed)="remove(author)">
+                  {{author}}
+                  <mat-icon matChipRemove>cancel</mat-icon>
+                </mat-chip>
+                <input
+                  placeholder="Новий автор..."
+                  #authorInput
+                  [formControl]="authorCtrl"
+                  [matAutocomplete]="auto"
+                  [matChipInputFor]="chipList"
+                  [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                  (matChipInputTokenEnd)="add($event)" required>
+              </mat-chip-list>
+              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                <mat-option *ngFor="let author of filteredAuthors | async" [value]="author">
+                  {{author}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+            <div>
+              <button mat-button matStepperNext>Next</button>
+            </div>
+          </form>
+        </mat-step>
+
+        <mat-step [stepControl]="materialsFormGroup">
+          <form [formGroup]="materialsFormGroup">
+            <ng-template matStepLabel>Інформація щодо матеріалів</ng-template>
+            <mat-form-field>
+              <mat-label>Назва навчального посібника</mat-label>
+              <input matInput formControlName="secondCtrl"
+                     [matAutocomplete]="auto"
+                     placeholder=""
+                     required>
+              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                <mat-option *ngFor="let author of filteredAuthors | async" [value]="author">
+                  {{author}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+
+            <div class="quantity">
+              <mat-form-field class="quantity">
+                <mat-label>Кількість сторінок</mat-label>
+                <input matInput
+                     placeholder=""
+                     required>
+              </mat-form-field>
+              <mat-form-field class="quantity">
+                <mat-label>Кількість рисунків</mat-label>
+                <input matInput
+                       placeholder=""
+                       required>
+              </mat-form-field>
+              <mat-form-field class="quantity">
+                <mat-label>Кількість таблиць</mat-label>
+                <input matInput
+                       placeholder=""
+                       required>
+              </mat-form-field>
+              <mat-checkbox [(ngModel)]="elVersion">Наявна електрона версія</mat-checkbox>
+            </div>
+
+            <div>
+              <button mat-button matStepperPrevious>Back</button>
+              <button mat-button matStepperNext>Next</button>
+            </div>
+          </form>
+        </mat-step>
+
+        <mat-step [stepControl]="publishingHouseFormGroup">
+          <form [formGroup]="publishingHouseFormGroup">
+            <ng-template matStepLabel>Місце опублікування</ng-template>
+            <mat-form-field>
+              <mat-label>Назва видавництва</mat-label>
+              <input matInput formControlName="publishingHouseCtrl"
+                     [matAutocomplete]="auto"
+                     placeholder=""
+                     required>
+              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                <mat-option *ngFor="let author of filteredAuthors | async" [value]="author">
+                  {{author}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+
+            <div>
+              <button mat-button matStepperPrevious>Back</button>
+              <button mat-button matStepperNext>Next</button>
+            </div>
+          </form>
+        </mat-step>
+
+        <mat-step>
+          <ng-template matStepLabel>Done</ng-template>
+          <p>You are now done.</p>
+          <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button (click)="stepper.reset()">Reset</button>
+          </div>
+        </mat-step>
+      </mat-vertical-stepper>
+    </mat-tab>
+    <mat-tab label="Show document"></mat-tab>
+    <mat-tab label="Download document"></mat-tab>
+  </mat-tab-group>
+</app-layout>

@@ -1,18 +1,21 @@
-.main-text {
-  font-size: 11vmin;
+mat-tab-group {
+ width: 100%;
+}
+mat-form-field {
+  width: 100%;
+}
+div.quantity {
+  display: inline-flex;
+}
+mat-form-field.quantity{
+  margin-right: 15px;
+}
+h2 {
+  font-size: 8vmin;
   line-height: 1em;
 }
-div.text-about{
-  margin: 4em 2em 1em 5em;
-}
-p.text {
-  font-size: medium;
-}
-div.logo-home{
-  margin: 4em 5em 1em 0;
-}
-img {
-  width: 75vmin;
+div.text-another-document{
+  margin: 4em 1em 1em 5em;
 }
 a.document {
   text-decoration: none;
@@ -23,6 +26,7 @@ a.document {
   border-radius: 10px;
   margin-left: 9px;
   margin-right: 9px;
+  margin-bottom: 15px;
 }
 a:hover, a:active{
   border: 2px solid #4E6AF9;

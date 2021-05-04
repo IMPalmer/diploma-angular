@@ -1,15 +1,14 @@
-<div fxLayout="row wrap" fxLayoutAlign="center center" class="layout-wrapper">
-  <div fxFlex="100%" fxFlex.lt-md="100%" class="flex-wrapper">
-    <mat-sidenav-container>
+<div fxLayout="row wrap" fxLayoutAlign="center center"  class="layout-wrapper">
+    <mat-sidenav-container fxFlex="100%" fxFlexFill>
       <mat-sidenav #sidenav role="navigation">
         <app-sidenav-list (sidenavClose)="sidenav.close()"></app-sidenav-list>
       </mat-sidenav>
       <mat-sidenav-content>
         <app-header (sidenavToggle)="sidenav.toggle()"></app-header>
-        <main fxLayoutAlign="center center">
+        <main fxLayoutAlign="center stretch" fxFlexFill>
           <ng-content></ng-content>
         </main>
+        <app-footer></app-footer>
       </mat-sidenav-content>
     </mat-sidenav-container>
-  </div>
 </div>

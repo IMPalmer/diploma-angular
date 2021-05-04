@@ -1,23 +1,10 @@
 <app-layout>
-  <section>
-    <p>Hello, there are some functionality you can get...</p>
-    <mat-grid-list cols="4" fxHide.xs>
-      <mat-grid-tile
-        *ngFor="let tile of tiles"
-        [colspan]="tile.cols"
-        [rowspan]="tile.rows"
-        [style.background]="tile.color">
-        {{tile.text}}
-      </mat-grid-tile>
-    </mat-grid-list>
-    <mat-grid-list cols="4" fxHide.gt-xs>
-      <mat-grid-tile
-        *ngFor="let tile of tilesMobile"
-        [colspan]="tile.cols"
-        [rowspan]="tile.rows"
-        [style.background]="tile.color">
-        {{tile.text}}
-      </mat-grid-tile>
-    </mat-grid-list>
-  </section>
+  <div class="text-about">
+    <h1 class="main-text">Try to fill out and generate the required documents easily</h1>
+    <p class="text">Work with авторська довідка, протокол експертної комісії та акт експертизи</p>
+    <a class="document" routerLink="/authors-certificate">Go to documents</a>
+  </div>
+  <div class="logo-home">
+    <img src="assets/logo_home.png" fxHide.xs alt="home logo">
+  </div>
 </app-layout>
