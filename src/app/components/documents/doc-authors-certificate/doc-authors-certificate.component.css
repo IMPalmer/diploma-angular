@@ -10,6 +10,9 @@ div.quantity {
 mat-form-field.quantity{
   margin-right: 15px;
 }
+mat-form-field.data{
+  display: inline-flex;
+}
 h2 {
   font-size: 8vmin;
   line-height: 1em;

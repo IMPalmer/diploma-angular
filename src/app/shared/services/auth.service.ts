@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import {Observable} from 'rxjs';
+import { Observable } from 'rxjs';
 import { UserModel } from '@models/user';
 import { RegistrationModel } from '@models/registration';
 import { TokensPairModel } from '@models/tokens-pair';

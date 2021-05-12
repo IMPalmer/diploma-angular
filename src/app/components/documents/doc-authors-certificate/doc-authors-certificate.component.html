@@ -7,8 +7,10 @@
   </div>
 
   <mat-tab-group animationDuration="0ms" >
+
     <mat-tab label="Input data">
-      <mat-vertical-stepper [linear]="false" #stepper>
+      <mat-vertical-stepper #stepper>
+
         <mat-step [stepControl]="authorsFormGroup">
           <form [formGroup]="authorsFormGroup">
             <ng-template matStepLabel>Додати авторів</ng-template>
@@ -22,20 +24,20 @@
                   {{author}}
                   <mat-icon matChipRemove>cancel</mat-icon>
                 </mat-chip>
-                <input
+                <input matInput
                   placeholder="Новий автор..."
-                  #authorInput
-                  [formControl]="authorCtrl"
-                  [matAutocomplete]="auto"
+                  #authorInput [formControl]="authorCtrl"
+                  [matAutocomplete]="autoAuthor"
                   [matChipInputFor]="chipList"
                   [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                   (matChipInputTokenEnd)="add($event)" required>
               </mat-chip-list>
-              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+              <mat-autocomplete #autoAuthor="matAutocomplete" (optionSelected)="selected($event, 'scientist')">
                 <mat-option *ngFor="let author of filteredAuthors | async" [value]="author">
                   {{author}}
                 </mat-option>
               </mat-autocomplete>
+
             </mat-form-field>
             <div>
               <button mat-button matStepperNext>Next</button>
@@ -48,37 +50,26 @@
             <ng-template matStepLabel>Інформація щодо матеріалів</ng-template>
             <mat-form-field>
               <mat-label>Назва навчального посібника</mat-label>
-              <input matInput formControlName="secondCtrl"
-                     [matAutocomplete]="auto"
-                     placeholder=""
-                     required>
-              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-                <mat-option *ngFor="let author of filteredAuthors | async" [value]="author">
-                  {{author}}
-                </mat-option>
-              </mat-autocomplete>
+              <input matInput formControlName="titleCtrl" placeholder="Назва публікації..." required>
             </mat-form-field>
 
             <div class="quantity">
               <mat-form-field class="quantity">
                 <mat-label>Кількість сторінок</mat-label>
-                <input matInput
-                     placeholder=""
-                     required>
+                <input matInput formControlName="numberOfPagesCtrl"
+                     placeholder="" required>
               </mat-form-field>
               <mat-form-field class="quantity">
                 <mat-label>Кількість рисунків</mat-label>
-                <input matInput
-                       placeholder=""
-                       required>
+                <input matInput formControlName="numberOfImagesCtrl"
+                       placeholder="" required>
               </mat-form-field>
               <mat-form-field class="quantity">
                 <mat-label>Кількість таблиць</mat-label>
-                <input matInput
-                       placeholder=""
-                       required>
+                <input matInput formControlName="numberOfTablesCtrl"
+                       placeholder="" required>
               </mat-form-field>
-              <mat-checkbox [(ngModel)]="elVersion">Наявна електрона версія</mat-checkbox>
+              <mat-checkbox [(ngModel)]="elVersion" [ngModelOptions]="{standalone: true}">Наявна електрона версія</mat-checkbox>
             </div>
 
             <div>
@@ -93,13 +84,13 @@
             <ng-template matStepLabel>Місце опублікування</ng-template>
             <mat-form-field>
               <mat-label>Назва видавництва</mat-label>
-              <input matInput formControlName="publishingHouseCtrl"
-                     [matAutocomplete]="auto"
-                     placeholder=""
-                     required>
-              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-                <mat-option *ngFor="let author of filteredAuthors | async" [value]="author">
-                  {{author}}
+              <input matInput [formControl]="publishingHouseCtrl"
+                     #publishingHouseInput
+                     [matAutocomplete]="autoPublishingHouse"
+                     placeholder="Видаництво..." required>
+              <mat-autocomplete #autoPublishingHouse="matAutocomplete" (optionSelected)="selected($event, 'publishingHouse')">
+                <mat-option *ngFor="let publishingHouses of filteredPublishingHouses | async" [value]="publishingHouses">
+                  {{publishingHouses}}
                 </mat-option>
               </mat-autocomplete>
             </mat-form-field>
@@ -111,16 +102,73 @@
           </form>
         </mat-step>
 
+        <mat-step [stepControl]="managerFormGroup">
+          <form [formGroup]="managerFormGroup">
+            <ng-template matStepLabel>Обрати завідувача</ng-template>
+            <mat-form-field>
+              <mat-label>Завідувач</mat-label>
+              <input matInput #managerInput [formControl]="managerCtrl"
+                     [matAutocomplete]="autoManager"
+                     placeholder="Завідувач..." required>
+              <mat-autocomplete #autoManager="matAutocomplete" (optionSelected)="selected($event, 'manager')">
+                <mat-option *ngFor="let author of filteredManagers | async" [value]="author">
+                  {{author}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Кафедра університету</mat-label>
+              <input matInput [formControl]="universityDepartmentCtrl"
+                     #universityDepartmentInput
+                     [matAutocomplete]="autoUniversityDepartment"
+                     placeholder="Кафедра університету..." required>
+              <mat-autocomplete #autoUniversityDepartment="matAutocomplete" (optionSelected)="selected($event, 'publishingHouse')">
+                <mat-option *ngFor="let universityDepartments of filteredUniversityDepartments | async" [value]="universityDepartments">
+                  {{universityDepartments}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+
+            <div>
+              <button mat-button matStepperPrevious>Back</button>
+              <button mat-button matStepperNext>Next</button>
+            </div>
+          </form>
+        </mat-step>
+
+        <mat-step [stepControl]="dataFormGroup">
+          <form [formGroup]="dataFormGroup">
+            <ng-template matStepLabel>Дата підготовлення документу</ng-template>
+            <mat-form-field class="data">
+              <mat-label>Обрати дату</mat-label>
+              <input matInput formControlName="dataCtrl"
+                     placeholder="mm/dd/yyyy" [matDatepicker]="picker">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+
+            <div>
+              <button mat-button matStepperPrevious>Back</button>
+              <button mat-button matStepperNext>Next</button>
+            </div>
+          </form>
+        </mat-step>
+
         <mat-step>
-          <ng-template matStepLabel>Done</ng-template>
+          <ng-template matStepLabel>Сформувати документ</ng-template>
           <p>You are now done.</p>
           <div>
             <button mat-button matStepperPrevious>Back</button>
             <button mat-button (click)="stepper.reset()">Reset</button>
+            <button mat-button (click)='moveToSelectedTab("Show document")'>Show document</button>
+            <button mat-button (click)='moveToSelectedTab("Download document")'>Download document</button>
           </div>
         </mat-step>
+
       </mat-vertical-stepper>
     </mat-tab>
+
     <mat-tab label="Show document"></mat-tab>
     <mat-tab label="Download document"></mat-tab>
   </mat-tab-group>
