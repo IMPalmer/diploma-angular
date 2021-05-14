@@ -1,11 +1,13 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { ENTER } from '@angular/cdk/keycodes';
 import { Observable } from 'rxjs';
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { map } from 'rxjs/operators';
 import { AutocompleteService } from '@services/autocomplete.service';
+import { FilesGenerationService } from '@services/files-generation.service';
+import { AuthorsCertificateModel, AuthorsModel } from '@models/authors-certificate';
 
 @Component({
   selector: 'app-doc-authors-certificate',
@@ -14,30 +16,30 @@ import { AutocompleteService } from '@services/autocomplete.service';
 })
 export class DocAuthorsCertificateComponent implements OnInit {
 
-  separatorKeysCodes: number[] = [ENTER, COMMA];
+  authorsCertificate: AuthorsCertificateModel;
+  separatorKeysCodes: number[] = [ENTER];
   elVersion = false;
 
   authorsFormGroup: FormGroup;
   materialsFormGroup: FormGroup;
   publishingHouseFormGroup: FormGroup;
   managerFormGroup: FormGroup;
-  dataFormGroup: FormGroup;
+  dateFormGroup: FormGroup;
 
   authorCtrl = new FormControl();
-  filteredAuthors: Observable<string[]>;
-  authors: string[] = []; allAuthors: string[] = [];
+  filteredAuthors: Observable<AuthorsModel[]>;
+  authors: AuthorsModel[] = []; allAuthors: AuthorsModel[] = [];
 
   managerCtrl = new FormControl();
-  filteredManagers: Observable<string[]>;
-  managers: string[];
+  filteredManagers: Observable<AuthorsModel[]>;
 
   publishingHouseCtrl = new FormControl();
   filteredPublishingHouses: Observable<string[]>;
-  publishingHouses: string[] = []; allPublishingHouses: string[] = [];
+  allPublishingHouses: string[] = [];
 
   universityDepartmentCtrl = new FormControl();
   filteredUniversityDepartments: Observable<string[]>;
-  universityDepartments: string[] = []; allUniversityDepartments: string[] = [];
+  allUniversityDepartments: string[] = [];
 
   @ViewChild('authorInput') authorInput: ElementRef<HTMLInputElement>;
   @ViewChild('publishingHouseInput') publishingHouseInput: ElementRef<HTMLInputElement>;
@@ -49,13 +51,19 @@ export class DocAuthorsCertificateComponent implements OnInit {
   @ViewChild('autoPublishingHouse') matPublishingHouseAutocomplete: MatAutocomplete;
   @ViewChild('autoUniversityDepartment') matUniversityDepartmentAutocomplete: MatAutocomplete;
 
-  constructor(private autocomplete: AutocompleteService) {
-    this.filteredAuthors = this.authorCtrl.valueChanges.pipe(
+  constructor(private autocomplete: AutocompleteService, private filesGeneration: FilesGenerationService) {
+    /*this.filteredAuthors = this.authorCtrl.valueChanges.pipe(
       map((author: string | null) => author ?
         this.filter(author, this.allAuthors) : this.allAuthors.slice()));
     this.filteredManagers = this.managerCtrl.valueChanges.pipe(
       map((manager: string | null) => manager ?
-        this.filter(manager, this.allAuthors) : this.allAuthors.slice()));
+        this.filter(manager, this.allAuthors) : this.allAuthors.slice()));*/
+    this.filteredAuthors = this.authorCtrl.valueChanges.pipe(
+      map((author: string | null) => author ? this.allAuthors.filter((a) =>
+        a.fullName.toLowerCase().indexOf(author) === 0) : this.allAuthors.slice()));
+    this.filteredManagers = this.managerCtrl.valueChanges.pipe(
+      map((manager: string | null) => manager ? this.allAuthors.filter((a) =>
+          a.fullName.toLowerCase().indexOf(manager) === 0) : this.allAuthors.slice()));
     this.filteredPublishingHouses = this.publishingHouseCtrl.valueChanges.pipe(
       map((publishingHouse: string | null) => publishingHouse ?
         this.filter(publishingHouse, this.allPublishingHouses) : this.allPublishingHouses.slice()));
@@ -73,9 +81,9 @@ export class DocAuthorsCertificateComponent implements OnInit {
     this.autocomplete.getScientist().subscribe(
       (data) => {
         data.forEach(scientist => {
-          this.allAuthors.push(scientist.firstName + ' '
-            + scientist.lastName + ' ' + scientist.middleName
-            + this.pushDegrees(scientist.degrees));
+          this.allAuthors.push({fullName: scientist.lastName + ' '
+            + scientist.firstName + ' ' + scientist.middleName,
+            degrees: this.pushDegrees(scientist.degrees)});
         });
       });
 
@@ -95,17 +103,17 @@ export class DocAuthorsCertificateComponent implements OnInit {
       });
   }
 
-  pushDegrees(degrees): string {
-    let degreesNames = '';
-    for (const el of degrees) {
-      degreesNames += ', ' + el.name;
+  pushDegrees(degrees): string[]{
+    const degreesNames: string[] = [];
+    for (const degree of degrees) {
+      degreesNames.push(degree.name);
     }
     return degreesNames;
   }
 
   initForms(): void{
     this.authorsFormGroup = new FormGroup({
-      authorCtrl: new FormControl('', [Validators.required]),
+      authorCtrl: new FormControl('', [Validators.required, Validators.minLength(1)])
     });
     this.materialsFormGroup = new FormGroup({
       titleCtrl: new FormControl('', [Validators.required]),
@@ -120,8 +128,8 @@ export class DocAuthorsCertificateComponent implements OnInit {
       managerCtrl: new FormControl('', [Validators.required]),
       universityDepartmentCtrl: new FormControl('', [Validators.required])
     });
-    this.dataFormGroup = new FormGroup({
-      dataCtrl: new FormControl('', [Validators.required]),
+    this.dateFormGroup = new FormGroup({
+      dateCtrl: new FormControl('', [Validators.required]),
     });
   }
 
@@ -129,16 +137,18 @@ export class DocAuthorsCertificateComponent implements OnInit {
     const input = event.input;
     const value = event.value;
 
-    if ((value || '').trim()) {
-      this.authors.push(value.trim());
-    }
+    this.allAuthors.forEach(author => {
+      if (author.fullName.toLowerCase().includes(value.toLowerCase())) {
+        this.authors.push(author);
+      }
+    });
 
     if (input) {
       input.value = '';
     }
   }
 
-  remove(author: string): void {
+  remove(author: AuthorsModel): void {
     const index = this.authors.indexOf(author);
     if (index >= 0) {
       this.authors.splice(index, 1);
@@ -148,23 +158,20 @@ export class DocAuthorsCertificateComponent implements OnInit {
   selected(event: MatAutocompleteSelectedEvent, dataVariation: string): void {
     switch (dataVariation) {
       case 'scientist': {
-        this.authors.push(event.option.viewValue);
+        this.authors.push(event.option.value);
         this.authorInput.nativeElement.value = '';
         break;
       }
       case 'manager': {
-        this.managers.push(event.option.viewValue);
-        this.managerInput.nativeElement.value = '';
+        this.managerInput.nativeElement.value = event.option.value;
         break;
       }
       case 'publishingHouse': {
-        this.publishingHouses.push(event.option.viewValue);
-        this.publishingHouseInput.nativeElement.value = '';
+        this.publishingHouseInput.nativeElement.value = event.option.value;
         break;
       }
       case 'universityDepartment': {
-        this.universityDepartments.push(event.option.viewValue);
-        this.universityDepartmentInput.nativeElement.value = '';
+        this.universityDepartmentInput.nativeElement.value = event.option.value;
         break;
       }
       default: {
@@ -174,11 +181,10 @@ export class DocAuthorsCertificateComponent implements OnInit {
   }
 
   private filter(value: string, data: string[]): string[] {
-    const filterValue = value.toLowerCase();
-    return data.filter(author => author.toLowerCase().indexOf(filterValue) === 0);
+    return data.filter(author => author.toLowerCase().indexOf(value.toLowerCase()) === 0);
   }
 
-  moveToSelectedTab(tabName: string): void{
+  moveToSelectedTab(tabName: string): void {
     for (let i = 0; i < document.querySelectorAll('.mat-tab-label-content').length; i++) {
       if ((document.querySelectorAll('.mat-tab-label-content')[i] as HTMLElement).innerText === tabName)
       {
@@ -186,4 +192,29 @@ export class DocAuthorsCertificateComponent implements OnInit {
       }
     }
   }
+
+  downloadAuthorsCertificate(materialsFormGroup, publishingHouseFormGroup, dateFormGroup, managerFormGroup): void {
+    this.authorsCertificate = {
+      format: 0, authors: this.authors,
+      publishingNameWithItsStatics: 'навчального посібника «' + materialsFormGroup.titleCtrl + '», '
+        + materialsFormGroup.numberOfPagesCtrl + ' сторінок, ' + materialsFormGroup.numberOfImagesCtrl
+        + ' рисунків, ' + materialsFormGroup.numberOfTablesCtrl + ' таблиць, ' + this.containsElVersion(this.elVersion),
+      publishingHouse: this.publishingHouseCtrl.value,
+      publishingDate: dateFormGroup.dateCtrl.toISOString(),
+      universityDepartmentName: this.universityDepartmentCtrl.value,
+      fullNameOfChiefOfUniversityDepartment: this.managerCtrl.value
+    };
+    console.log(this.authorsCertificate);
+    this.filesGeneration.generateAuthorsCertificate(this.authorsCertificate).subscribe(
+      (data) => console.log(data));
+  }
+
+  containsElVersion(elVersion: boolean): string {
+    if (elVersion) {
+      return 'наявна електронна версія';
+    } else {
+      return 'відсутня електронна версія';
+    }
+  }
 }
+

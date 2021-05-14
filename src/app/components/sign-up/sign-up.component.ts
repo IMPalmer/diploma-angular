@@ -1,10 +1,10 @@
-import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {CustomValidationService} from '@services/custom-validation.service';
-import {RegistrationModel} from '@models/registration';
-import {UserModel} from '@models/user';
-import {AuthService} from '@services/auth.service';
-import {Router} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { CustomValidationService } from '@services/custom-validation.service';
+import { RegistrationModel } from '@models/registration';
+import { UserModel } from '@models/user';
+import { AuthService } from '@services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sign-up',
@@ -39,7 +39,7 @@ export class SignUpComponent implements OnInit {
     return this.registrationFormGroup.controls[controlName].hasError(errorName);
   }
 
-  registrationProcess = (formGroupValue) => {
+  registrationProcess(formGroupValue): void {
     if (this.registrationFormGroup.valid) {
       this.auth.registration(this.executeRegistrationForm(formGroupValue)).subscribe(
         (data: UserModel) => {

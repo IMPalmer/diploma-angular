@@ -5,5 +5,5 @@ export interface ScientistModel{
   firstName: string;
   lastName: string;
   middleName: string;
-  degrees: Array<DegreeModel>[];
+  degrees: Array<DegreeModel>;
 }

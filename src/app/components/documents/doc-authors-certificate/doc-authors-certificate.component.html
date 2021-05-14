@@ -9,22 +9,22 @@
   <mat-tab-group animationDuration="0ms" >
 
     <mat-tab label="Input data">
-      <mat-vertical-stepper #stepper>
+      <mat-vertical-stepper  #stepper>
 
         <mat-step [stepControl]="authorsFormGroup">
           <form [formGroup]="authorsFormGroup">
             <ng-template matStepLabel>Додати авторів</ng-template>
             <mat-form-field>
               <mat-label>Автори</mat-label>
-              <mat-chip-list #chipList >
+              <mat-chip-list  #chipList required formControlName="authorCtrl">
                 <mat-chip
                   *ngFor="let author of authors"
                   selectable removable
                   (removed)="remove(author)">
-                  {{author}}
+                  {{author.fullName + ', ' + author.degrees}}
                   <mat-icon matChipRemove>cancel</mat-icon>
                 </mat-chip>
-                <input matInput
+                <input matInput type="text"
                   placeholder="Новий автор..."
                   #authorInput [formControl]="authorCtrl"
                   [matAutocomplete]="autoAuthor"
@@ -34,7 +34,7 @@
               </mat-chip-list>
               <mat-autocomplete #autoAuthor="matAutocomplete" (optionSelected)="selected($event, 'scientist')">
                 <mat-option *ngFor="let author of filteredAuthors | async" [value]="author">
-                  {{author}}
+                  {{author.fullName + ', ' + author.degrees}}
                 </mat-option>
               </mat-autocomplete>
 
@@ -50,24 +50,24 @@
             <ng-template matStepLabel>Інформація щодо матеріалів</ng-template>
             <mat-form-field>
               <mat-label>Назва навчального посібника</mat-label>
-              <input matInput formControlName="titleCtrl" placeholder="Назва публікації..." required>
+              <input matInput type="text" formControlName="titleCtrl" placeholder="Назва публікації..." required>
             </mat-form-field>
 
             <div class="quantity">
               <mat-form-field class="quantity">
                 <mat-label>Кількість сторінок</mat-label>
                 <input matInput formControlName="numberOfPagesCtrl"
-                     placeholder="" required>
+                     type="number" required>
               </mat-form-field>
               <mat-form-field class="quantity">
                 <mat-label>Кількість рисунків</mat-label>
                 <input matInput formControlName="numberOfImagesCtrl"
-                       placeholder="" required>
+                       type="number" required>
               </mat-form-field>
               <mat-form-field class="quantity">
                 <mat-label>Кількість таблиць</mat-label>
                 <input matInput formControlName="numberOfTablesCtrl"
-                       placeholder="" required>
+                       type="number" required>
               </mat-form-field>
               <mat-checkbox [(ngModel)]="elVersion" [ngModelOptions]="{standalone: true}">Наявна електрона версія</mat-checkbox>
             </div>
@@ -85,7 +85,7 @@
             <mat-form-field>
               <mat-label>Назва видавництва</mat-label>
               <input matInput [formControl]="publishingHouseCtrl"
-                     #publishingHouseInput
+                     #publishingHouseInput type="text"
                      [matAutocomplete]="autoPublishingHouse"
                      placeholder="Видаництво..." required>
               <mat-autocomplete #autoPublishingHouse="matAutocomplete" (optionSelected)="selected($event, 'publishingHouse')">
@@ -108,11 +108,11 @@
             <mat-form-field>
               <mat-label>Завідувач</mat-label>
               <input matInput #managerInput [formControl]="managerCtrl"
-                     [matAutocomplete]="autoManager"
+                     [matAutocomplete]="autoManager" type="text"
                      placeholder="Завідувач..." required>
               <mat-autocomplete #autoManager="matAutocomplete" (optionSelected)="selected($event, 'manager')">
-                <mat-option *ngFor="let author of filteredManagers | async" [value]="author">
-                  {{author}}
+                <mat-option *ngFor="let author of filteredManagers | async" [value]="author.fullName + ', ' + author.degrees">
+                  {{author.fullName + ', ' + author.degrees}}
                 </mat-option>
               </mat-autocomplete>
             </mat-form-field>
@@ -120,7 +120,7 @@
             <mat-form-field>
               <mat-label>Кафедра університету</mat-label>
               <input matInput [formControl]="universityDepartmentCtrl"
-                     #universityDepartmentInput
+                     #universityDepartmentInput type="text"
                      [matAutocomplete]="autoUniversityDepartment"
                      placeholder="Кафедра університету..." required>
               <mat-autocomplete #autoUniversityDepartment="matAutocomplete" (optionSelected)="selected($event, 'publishingHouse')">
@@ -137,12 +137,12 @@
           </form>
         </mat-step>
 
-        <mat-step [stepControl]="dataFormGroup">
-          <form [formGroup]="dataFormGroup">
+        <mat-step [stepControl]="dateFormGroup">
+          <form [formGroup]="dateFormGroup">
             <ng-template matStepLabel>Дата підготовлення документу</ng-template>
             <mat-form-field class="data">
               <mat-label>Обрати дату</mat-label>
-              <input matInput formControlName="dataCtrl"
+              <input matInput formControlName="dateCtrl"
                      placeholder="mm/dd/yyyy" [matDatepicker]="picker">
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
@@ -170,6 +170,11 @@
     </mat-tab>
 
     <mat-tab label="Show document"></mat-tab>
-    <mat-tab label="Download document"></mat-tab>
+    <mat-tab label="Download document">
+      <div>
+        <button mat-button (click)="downloadAuthorsCertificate(materialsFormGroup.value,
+        publishingHouseFormGroup.value, dateFormGroup.value, managerFormGroup.value)">Download file</button>
+      </div>
+    </mat-tab>
   </mat-tab-group>
 </app-layout>
