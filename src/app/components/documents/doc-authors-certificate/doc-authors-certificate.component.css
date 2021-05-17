@@ -36,3 +36,6 @@ a:hover, a:active{
   margin-left: 8px;
   margin-right: 8px;
 }
+img {
+  width: 45vmin;
+}

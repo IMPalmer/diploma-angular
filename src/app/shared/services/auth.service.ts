@@ -18,11 +18,7 @@ export class AuthService {
 
   get user(): UserModel {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    if (this.currentUser) {
-      this.loggedIn = true;
-    } else {
-      this.loggedIn = false;
-    }
+    this.loggedIn = !!this.currentUser;
     return this.currentUser;
   }
 
@@ -36,10 +32,10 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-
   login(email: string, password: string): Observable<UserModel> {
     return this.http.post(`${environment.apiUrl}Identity/login`,
-      {email, password}).pipe(map((data) => (this.userData = Object.values(data), {
+      {email, password}).pipe(map((data) => (
+        this.userData = Object.values(data), {
         id: this.userData[0].id,
         email: this.userData[0].email,
         firstName: this.userData[0].firstName,

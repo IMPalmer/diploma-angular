@@ -9,7 +9,7 @@
   <mat-tab-group animationDuration="0ms" >
 
     <mat-tab label="Input data">
-      <mat-vertical-stepper  #stepper>
+      <mat-vertical-stepper #stepper>
 
         <mat-step [stepControl]="authorsFormGroup">
           <form [formGroup]="authorsFormGroup">
@@ -24,13 +24,13 @@
                   {{author.fullName + ', ' + author.degrees}}
                   <mat-icon matChipRemove>cancel</mat-icon>
                 </mat-chip>
-                <input matInput type="text"
+                <input matInput type="text" required
                   placeholder="Новий автор..."
                   #authorInput [formControl]="authorCtrl"
                   [matAutocomplete]="autoAuthor"
                   [matChipInputFor]="chipList"
                   [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                  (matChipInputTokenEnd)="add($event)" required>
+                  (matChipInputTokenEnd)="add($event)">
               </mat-chip-list>
               <mat-autocomplete #autoAuthor="matAutocomplete" (optionSelected)="selected($event, 'scientist')">
                 <mat-option *ngFor="let author of filteredAuthors | async" [value]="author">
@@ -111,7 +111,7 @@
                      [matAutocomplete]="autoManager" type="text"
                      placeholder="Завідувач..." required>
               <mat-autocomplete #autoManager="matAutocomplete" (optionSelected)="selected($event, 'manager')">
-                <mat-option *ngFor="let author of filteredManagers | async" [value]="author.fullName + ', ' + author.degrees">
+                <mat-option *ngFor="let author of filteredManagers | async" [value]="author.fullName">
                   {{author.fullName + ', ' + author.degrees}}
                 </mat-option>
               </mat-autocomplete>
@@ -169,11 +169,11 @@
       </mat-vertical-stepper>
     </mat-tab>
 
-    <mat-tab label="Show document"></mat-tab>
-    <mat-tab label="Download document">
-      <div>
-        <button mat-button (click)="downloadAuthorsCertificate(materialsFormGroup.value,
-        publishingHouseFormGroup.value, dateFormGroup.value, managerFormGroup.value)">Download file</button>
+    <mat-tab disabled label="Show document"></mat-tab>
+    <mat-tab  label="Download document">
+      <div class="download" fxLayout="row wrap" fxLayoutAlign="center center">
+        <img src="assets/hand_download.png" fxHide.xs alt="hand download">
+        <button class="download" mat-button (click)="downloadAuthorsCertificate(materialsFormGroup.value, dateFormGroup.value)">Download file</button>
       </div>
     </mat-tab>
   </mat-tab-group>

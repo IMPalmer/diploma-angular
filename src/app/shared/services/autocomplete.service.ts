@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {EMPTY, Observable} from 'rxjs';
+import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ScientistModel } from '@models/scientist';
@@ -7,7 +7,8 @@ import { PublishingHouseModel } from '@models/publishing-house';
 import { UniversityDepartmentModel } from '@models/university-department';
 import { AuthService } from '@services/auth.service';
 import { UserModel } from '@models/user';
-import {catchError, delay } from 'rxjs/operators';
+import { map, mergeMap } from 'rxjs/operators';
+import { AuthorsModel } from '@models/authors-certificate';
 
 @Injectable({
   providedIn: 'root'
@@ -15,22 +16,54 @@ import {catchError, delay } from 'rxjs/operators';
 export class AutocompleteService {
 
   user: UserModel;
-  myHeaders = new HttpHeaders().set('Authorization', 'Bearer ' + this.auth.user.accessToken);
 
   constructor(private auth: AuthService, private http: HttpClient) { }
 
-  getScientist(): Observable<Array<ScientistModel>> {
+  getAllData(allAuthors: AuthorsModel[],
+             allPublishingHouses: string[],
+             allUniversityDepartments: string[]):
+    Observable<void> {
     return this.http.get<Array<ScientistModel>>(`${environment.apiUrl}Scientist`,
-      {headers: this.myHeaders}).pipe(delay(2000), catchError(() => EMPTY));
+      {headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.auth.user.accessToken)}).pipe(
+        map((data) => {
+          data.forEach(scientist => {
+            allAuthors.push({fullName: scientist.lastName + ' '
+                + scientist.firstName + ' ' + scientist.middleName,
+              degrees: this.pushDegrees(scientist.degrees)});
+          });
+        }),
+      mergeMap( () => {
+        return this.http.get<Array<PublishingHouseModel>>(`${environment.apiUrl}PublishingHouse`,
+          {headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.auth.user.accessToken)}).pipe(
+            map((data) => {
+              data.forEach(publishingHouse => {
+                allPublishingHouses.push(publishingHouse.name);
+              });
+            }),
+          mergeMap(() => {
+            return this.http.get<Array<UniversityDepartmentModel>>(`${environment.apiUrl}UniversityDepartment`,
+              {headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.auth.user.accessToken)}).pipe(
+                map((data) => {
+                  data.forEach(universityDepartment => {
+                    allUniversityDepartments.push(universityDepartment.fullName
+                      + '(' + universityDepartment.shortName + ')');
+                  });
+                })
+            );
+          }
+        ));
+      }));
   }
 
-  getPublishingHouse(): Observable<Array<PublishingHouseModel>> {
-    return this.http.get<Array<PublishingHouseModel>>(`${environment.apiUrl}PublishingHouse`,
-      {headers: this.myHeaders}).pipe(delay(2000), catchError(() => EMPTY));
+  pushDegrees(degrees): string[]{
+    const degreesNames: string[] = [];
+    for (const degree of degrees) {
+      degreesNames.push(degree.name);
+    }
+    return degreesNames;
   }
 
-  getUniversityDepartment(): Observable<Array<UniversityDepartmentModel>> {
-    return this.http.get<Array<UniversityDepartmentModel>>(`${environment.apiUrl}UniversityDepartment`,
-      {headers: this.myHeaders}).pipe(delay(2000), catchError(() => EMPTY));
+  filter(value: string, data: string[]): string[] {
+    return data.filter(author => author.toLowerCase().indexOf(value.toLowerCase()) === 0);
   }
 }
