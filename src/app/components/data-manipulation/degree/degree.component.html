@@ -1,0 +1,60 @@
+<app-layout>
+  <div fxLayout fxLayoutAlign="center center">
+    <mat-form-field fxFlex="40%">
+      <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Filter">
+    </mat-form-field>
+  </div>
+  <div fxLayout="column" fxLayoutAlign="start stretch" fxFlexFill>
+    <table mat-table [dataSource]="dataSource" matSort>
+
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Id </th>
+        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="degree">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Degree </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="delete">
+        <th mat-header-cell *matHeaderCellDef> Delete </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button class="degree_clicked" (click)="deleteDegree(element.id)">
+            <mat-icon class="mat-18">delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [pageSize]="2" [pageSizeOptions]="[2, 4, 6, 10, 20]">
+    </mat-paginator>
+    <div fxLayoutAlign="center center">
+      <form  autocomplete="off" novalidate fxLayoutGap="10px" [formGroup]="degreeFormGroup">
+
+        <mat-form-field>
+          <mat-label>id</mat-label>
+          <input matInput
+                 [formControl]="idCtrl"
+                 type="text"
+                 [matAutocomplete]="auto">
+          <mat-autocomplete #auto='matAutocomplete'>
+            <mat-option *ngFor="let degree of filteredIds | async" [value]="degree.id">
+              {{degree.id}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field appearance="standard">
+          <mat-label>name</mat-label>
+          <input matInput formControlName="nameCtrl" type="text">
+        </mat-form-field>
+
+        <button mat-flat-button class="degree_clicked" type="submit" (click)="addDegree(degreeFormGroup.value)">Add</button>
+        <button mat-flat-button class="degree_clicked" type="submit" (click)="updateDegree(idCtrl.value, degreeFormGroup.value)">Update</button>
+      </form>
+    </div>
+  </div>
+</app-layout>

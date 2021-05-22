@@ -2,11 +2,15 @@ a{
   text-decoration: none;
 }
 a:hover, a:active{
-  color: lightgray;
+  color: #4E6AF9;
 }
 .nav-caption{
   display: inline-block;
-  padding-left: 6em;
+  padding-left: 2em;
+}
+.nav-list-caption{
+  display: inline-block;
+  padding-left: 0.5em;
 }
 .mat-expansion-panel {
   box-shadow: none;
@@ -15,7 +19,4 @@ a:hover, a:active{
 .mat-expansion-panel-header {
   padding: 0 1em;
   font-size: 16px;
-}
-.mat-panel-title:hover, .mat-panel-title:active {
-  color: lightgray;
 }
