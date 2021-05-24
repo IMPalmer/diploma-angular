@@ -18,6 +18,9 @@ import { FooterComponent } from '@components/navigation/footer/footer.component'
 import { DocAuthorsCertificateComponent } from '@components/documents/doc-authors-certificate/doc-authors-certificate.component';
 import { DegreeComponent } from '@components/data-manipulation/degree/degree.component';
 import { DataManipulationModule } from './modules/data-manipulation.module';
+import { PublishingHouseComponent } from './components/data-manipulation/publishing-house/publishing-house.component';
+import { UniversityDepartmentComponent } from './components/data-manipulation/university-department/university-department.component';
+import { ScientistComponent } from './components/data-manipulation/scientist/scientist.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +33,10 @@ import { DataManipulationModule } from './modules/data-manipulation.module';
     SignUpComponent,
     FooterComponent,
     DocAuthorsCertificateComponent,
-    DegreeComponent
+    DegreeComponent,
+    PublishingHouseComponent,
+    UniversityDepartmentComponent,
+    ScientistComponent
   ],
   imports: [
     BrowserModule,

@@ -1,11 +1,11 @@
 <app-layout>
   <div class="move_between_pages" fxLayoutAlign="space-between center">
-    <a routerLink="/data-manipulation/publishing-house">
-      <mat-icon>keyboard_arrow_left</mat-icon> PublishingHouse
+    <a routerLink="/data-manipulation/scientist">
+      <mat-icon>keyboard_arrow_left</mat-icon> Scientist
     </a>
-    <span class="title">Degree</span>
-    <a routerLink="/data-manipulation/university-department">
-      UniversityDepartment <mat-icon>keyboard_arrow_right</mat-icon>
+    <span class="title">Publishing House</span>
+    <a routerLink="/data-manipulation/degree">
+      Degree <mat-icon>keyboard_arrow_right</mat-icon>
     </a>
   </div>
   <div fxLayoutAlign="center center">
@@ -21,15 +21,15 @@
         <td mat-cell *matCellDef="let element"> {{element.id}} </td>
       </ng-container>
 
-      <ng-container matColumnDef="degree">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Degree </th>
+      <ng-container matColumnDef="publishingHouse">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Publishing House </th>
         <td mat-cell *matCellDef="let element"> {{element.name}} </td>
       </ng-container>
 
       <ng-container matColumnDef="delete">
         <th mat-header-cell *matHeaderCellDef> Delete </th>
         <td mat-cell *matCellDef="let element">
-          <button mat-icon-button class="degree_clicked" (click)="deleteDegree(element.id)">
+          <button mat-icon-button class="publishing_house_clicked" (click)="deletePublishingHouse(element.id)">
             <mat-icon class="mat-18">delete</mat-icon>
           </button>
         </td>
@@ -41,7 +41,7 @@
     <mat-paginator [pageSize]="7" [pageSizeOptions]="[2, 5, 7]">
     </mat-paginator>
     <div fxLayoutAlign="center center">
-      <form  autocomplete="off" novalidate fxLayoutGap="10px" [formGroup]="degreeFormGroup">
+      <form  autocomplete="off" novalidate fxLayoutGap="10px" [formGroup]="publishingHouseFormGroup">
 
         <mat-form-field>
           <mat-label>id</mat-label>
@@ -50,8 +50,8 @@
                  type="text"
                  [matAutocomplete]="auto">
           <mat-autocomplete #auto='matAutocomplete'>
-            <mat-option *ngFor="let degree of filteredIds | async" [value]="degree.id">
-              {{degree.id}}
+            <mat-option *ngFor="let publishingHouse of filteredIds | async" [value]="publishingHouse.id">
+              {{publishingHouse.id}}
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>
@@ -61,8 +61,8 @@
           <input matInput formControlName="nameCtrl" type="text">
         </mat-form-field>
 
-        <button mat-flat-button class="degree_clicked" type="submit" (click)="addDegree(degreeFormGroup.value)">Add</button>
-        <button mat-flat-button class="degree_clicked" type="submit" (click)="updateDegree(idCtrl.value, degreeFormGroup.value)">Update</button>
+        <button mat-flat-button class="publishing_house_clicked" type="submit" (click)="addPublishingHouse(publishingHouseFormGroup.value)">Add</button>
+        <button mat-flat-button class="publishing_house_clicked" type="submit" (click)="updatePublishingHouse(idCtrl.value, publishingHouseFormGroup.value)">Update</button>
       </form>
     </div>
   </div>

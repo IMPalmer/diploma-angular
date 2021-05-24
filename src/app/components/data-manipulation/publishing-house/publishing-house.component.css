@@ -6,7 +6,7 @@ table {
 th.mat-header-cell {
   text-align: left;
 }
-.degree_clicked:hover, .degree_clicked:active{
+.publishing_house_clicked:hover, .publishing_house_clicked:active{
   color: #4E6AF9;
 }
 a{
