@@ -1,10 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
-import { AppRoutingModule } from './modules/routing/app-routing.module';
+import { AppRoutingModule } from '@modules/routing/app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MaterialModule } from './modules/material.module';
+import { MaterialModule } from '@modules/material.module';
 import { LayoutComponent } from '@components/layout/layout.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { HeaderComponent } from '@components/navigation/header/header.component';
@@ -17,11 +17,13 @@ import { TokenInterceptor } from '@interceptors/token.interceptor';
 import { FooterComponent } from '@components/navigation/footer/footer.component';
 import { DocAuthorsCertificateComponent } from '@components/documents/doc-authors-certificate/doc-authors-certificate.component';
 import { DegreeComponent } from '@components/data-manipulation/degree/degree.component';
-import { DataManipulationModule } from './modules/data-manipulation.module';
-import { PublishingHouseComponent } from './components/data-manipulation/publishing-house/publishing-house.component';
-import { UniversityDepartmentComponent } from './components/data-manipulation/university-department/university-department.component';
-import { ScientistComponent } from './components/data-manipulation/scientist/scientist.component';
-import { DocExpertiseActComponent } from './components/documents/doc-expertise-act/doc-expertise-act.component';
+import { DataManipulationModule } from '@modules/data-manipulation.module';
+import { PublishingHouseComponent } from '@components/data-manipulation/publishing-house/publishing-house.component';
+import { UniversityDepartmentComponent } from '@components/data-manipulation/university-department/university-department.component';
+import { ScientistComponent } from '@components/data-manipulation/scientist/scientist.component';
+import { DocExpertiseActComponent } from '@components/documents/doc-expertise-act/doc-expertise-act.component';
+import { DocumentsModule } from '@modules/documents.module';
+import { DocExpertCommissionProtocolOfMeetingComponent } from './components/documents/doc-expert-commission-protocol-of-meeting/doc-expert-commission-protocol-of-meeting.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +40,8 @@ import { DocExpertiseActComponent } from './components/documents/doc-expertise-a
     PublishingHouseComponent,
     UniversityDepartmentComponent,
     ScientistComponent,
-    DocExpertiseActComponent
+    DocExpertiseActComponent,
+    DocExpertCommissionProtocolOfMeetingComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +52,8 @@ import { DocExpertiseActComponent } from './components/documents/doc-expertise-a
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    DataManipulationModule
+    DataManipulationModule,
+    DocumentsModule
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }],
   bootstrap: [AppComponent]

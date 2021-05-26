@@ -5,7 +5,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '@services/auth.service';
 import { UserModel } from '@models/user';
-import {ExpertiseActModel} from '@models/expertise-act';
+import { ExpertiseActModel } from '@models/expertise-act';
+import { ExpertCommissionProtocolOfMeetingModel } from '@models/expert-commission-protocol-of-meeting';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,13 @@ export class FilesGenerationService {
   generateExpertiseAct(expertiseAct: ExpertiseActModel): Observable<ArrayBuffer> {
     return this.http.post(`${environment.apiUrl}FilesGeneration/generate-expertise-act`,
       expertiseAct,
+      {headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.auth.user.accessToken), responseType: 'arraybuffer' });
+  }
+
+  generateExpertCommissionProtocolOfMeeting(
+    expertCommissionProtocolOfMeeting: ExpertCommissionProtocolOfMeetingModel): Observable<ArrayBuffer> {
+    return this.http.post(`${environment.apiUrl}FilesGeneration/generate-protocol-of-meeting-of-expert-commission`,
+      expertCommissionProtocolOfMeeting,
       {headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.auth.user.accessToken), responseType: 'arraybuffer' });
   }
 

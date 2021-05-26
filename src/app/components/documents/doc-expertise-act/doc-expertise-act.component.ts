@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {AuthorsModel} from '@models/authors-certificate';
@@ -16,7 +16,7 @@ import {CommissionModel, ExpertiseActModel} from '@models/expertise-act';
   templateUrl: './doc-expertise-act.component.html',
   styleUrls: ['./doc-expertise-act.component.css']
 })
-export class DocExpertiseActComponent implements OnInit, AfterViewInit {
+export class DocExpertiseActComponent implements OnInit {
 
   separatorKeysCodes: number[] = [ENTER];
   elVersion = false;
@@ -87,9 +87,6 @@ export class DocExpertiseActComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngAfterViewInit(): void {
-  }
-
   filterData(ctrl: FormControl): void {
     this.filteredScientists = ctrl.valueChanges.pipe(
       map((author: string | null) => author ? this.allScientists.filter((a) =>
@@ -127,10 +124,26 @@ export class DocExpertiseActComponent implements OnInit, AfterViewInit {
     }
   }
 
-  remove(author: AuthorsModel): void {
-    const index = this.authors.indexOf(author);
-    if (index >= 0) {
-      this.authors.splice(index, 1);
+  remove(author: AuthorsModel, dataVariation: string): void {
+    switch (dataVariation) {
+      case 'memberOfTheCommission': {
+        const index = this.membersOfTheCommission.indexOf(author);
+        if (index >= 0) {
+          this.membersOfTheCommission.splice(index, 1);
+        }
+        break;
+      }
+      case 'authors': {
+        const index = this.authors.indexOf(author);
+        if (index >= 0) {
+          this.authors.splice(index, 1);
+        }
+        break;
+      }
+
+      default: {
+        break;
+      }
     }
   }
 
@@ -189,7 +202,7 @@ export class DocExpertiseActComponent implements OnInit, AfterViewInit {
         chiefOfSecurityDepartmentCtrl)).subscribe(
       result => {
         this.filesGeneration.downloadFile(result,
-          'ExpertiseAct_' + this.auth.user.lastName + '_' + this.auth.user.firstName,
+          'АктЕкспертизи_' + this.auth.user.lastName + '_' + this.auth.user.firstName,
           'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
       });
   }
@@ -206,7 +219,7 @@ export class DocExpertiseActComponent implements OnInit, AfterViewInit {
       format: 0,
       provostName: provostCtrl,
       actCreationDate: dateFormGroup.dateCtrl.toISOString(),
-      facultyNumber: commissionFormGroup.facultyNumberCtrl.value,
+      facultyNumber: commissionFormGroup.facultyNumberCtrl,
       headOfTheCommission: headOfTheCommissionCtrl,
       membersOfTheCommission: this.membersOfTheCommission,
       authorsOfThePublication: this.authors,

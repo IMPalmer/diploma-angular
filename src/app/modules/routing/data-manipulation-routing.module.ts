@@ -4,7 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { DegreeComponent } from '@components/data-manipulation/degree/degree.component';
 import { PublishingHouseComponent } from '@components/data-manipulation/publishing-house/publishing-house.component';
 import { UniversityDepartmentComponent } from '@components/data-manipulation/university-department/university-department.component';
-import {ScientistComponent} from '@components/data-manipulation/scientist/scientist.component';
+import { ScientistComponent } from '@components/data-manipulation/scientist/scientist.component';
 
 const routes: Routes = [
   { path: 'degree', component: DegreeComponent },

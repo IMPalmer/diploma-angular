@@ -1,0 +1,51 @@
+mat-form-field {
+  width: 100%;
+}
+div.quantity {
+  display: inline-flex;
+}
+mat-form-field.quantity, mat-checkbox.quantity {
+  margin-right: 15px;
+}
+mat-form-field.date {
+  display: inline-flex;
+}
+h2 {
+  font-size: 8vmin;
+  line-height: 1em;
+}
+div.text-another-document{
+  margin: 4em 1em 1em 5em;
+}
+a.document {
+  text-decoration: none;
+  padding: 4px;
+  color: white;
+  background: #4E6AF9;
+  border: 1px solid #4E6AF9;
+  border-radius: 10px;
+  margin-left: 9px;
+  margin-right: 9px;
+  margin-bottom: 15px;
+}
+a.active_document {
+  text-decoration: none;
+  padding: 4px;
+  color: white;
+  background: #8397fc;
+  border: 1px solid #8397fc;
+  border-radius: 10px;
+  margin-left: 9px;
+  margin-right: 9px;
+  margin-bottom: 15px;
+}
+a:hover, a:active {
+  border: 2px solid #4E6AF9;
+  margin-left: 8px;
+  margin-right: 8px;
+}
+a.active_document:hover, a.active_document:active {
+  border: 2px solid #8397fc;
+  margin-left: 8px;
+  margin-right: 8px;
+}

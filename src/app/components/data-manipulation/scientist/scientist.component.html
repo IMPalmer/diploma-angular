@@ -64,7 +64,8 @@
           <input matInput
                  [formControl]="idCtrl"
                  type="text"
-                 [matAutocomplete]="autoId">
+                 [matAutocomplete]="autoId"
+                 (focus)="filterData(idCtrl, 'ids')">
           <mat-autocomplete #autoId='matAutocomplete'>
             <mat-option *ngFor="let scientist of filteredIds | async" [value]="scientist.id">
               {{scientist.id}}
@@ -103,7 +104,8 @@
                    [matAutocomplete]="autoDegreeId"
                    [matChipInputFor]="chipList"
                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                   (matChipInputTokenEnd)="add($event)">
+                   (matChipInputTokenEnd)="add($event)"
+                   (keypress)="filterData(degreeIdCtrl, 'degreesIds')" >
           </mat-chip-list>
           <mat-autocomplete #autoDegreeId='matAutocomplete' (optionSelected)="selected($event)">
             <mat-option *ngFor="let degree of filteredDegreesIds | async" [value]="degree.id">
@@ -113,7 +115,7 @@
         </mat-form-field>
 
         <button mat-flat-button class="scientist_clicked" type="submit" (click)="addScientist(scientistFormGroup.value)">Додати</button>
-        <button mat-flat-button class="scientist_clicked" type="submit" (click)="updateScientist(idCtrl.value, scientistFormGroup.value)">>Оновити дані</button>
+        <button mat-flat-button class="scientist_clicked" type="submit" (click)="updateScientist(idCtrl.value, scientistFormGroup.value)">Оновити дані</button>
       </form>
     </div>
   </div>

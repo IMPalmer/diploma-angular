@@ -3,9 +3,9 @@
 
     <div class="text-another-document">
       <h2>Обрати інший документ</h2>
-      <a class="document" routerLink="/authors-certificate">Авторська довідка</a><br><br>
-      <a class="active_document" routerLink="/expertise-act">Акт експертизи</a><br><br>
-      <a class="document" routerLink="/">Протокол засідання експертної комісії</a>
+      <a class="document" routerLink="/documents/authors-certificate">Авторська довідка</a><br><br>
+      <a class="active_document" routerLink="/documents/expertise-act">Акт експертизи</a><br><br>
+      <a class="document" routerLink="/documents/expert-commission-protocol-of-meeting">Протокол засідання експертної комісії</a>
     </div>
 
     <mat-vertical-stepper #stepper>
@@ -157,7 +157,7 @@
               <mat-chip
                 *ngFor="let memberOfTheCommission of membersOfTheCommission"
                 selectable removable
-                (removed)="remove(memberOfTheCommission)">
+                (removed)="remove(memberOfTheCommission, 'memberOfTheCommission')">
                 {{memberOfTheCommission.fullName + ', ' + memberOfTheCommission.degrees}}
                 <mat-icon matChipRemove>cancel</mat-icon>
               </mat-chip>
@@ -197,7 +197,7 @@
               <mat-chip
                 *ngFor="let author of authors"
                 selectable removable
-                (removed)="remove(author)">
+                (removed)="remove(author, 'authors')">
                 {{author.fullName + ', ' + author.degrees}}
                 <mat-icon matChipRemove>cancel</mat-icon>
               </mat-chip>
@@ -237,7 +237,7 @@
             <input
               matInput
               type="text"
-              placeholder="Проректор..."
+              placeholder="Начальник режимно-секретного відділу..."
               required
               #chiefOfSecurityDepartmentInput
               [formControl]="chiefOfSecurityDepartmentCtrl"
@@ -255,6 +255,7 @@
           </mat-form-field>
 
           <div>
+            <button mat-button matStepperPrevious>Назад</button>
             <button mat-button matStepperNext>Далі</button>
           </div>
         </form>

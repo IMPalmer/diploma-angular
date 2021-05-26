@@ -67,6 +67,17 @@ export class AutocompleteService {
       }));
   }
 
+  getAllDataForExpertCommissionProtocolOfMeeting(allScientists: string[]): Observable<void> {
+    return this.http.get<Array<ScientistModel>>(`${environment.apiUrl}Scientist`,
+      {headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.auth.user.accessToken)}).pipe(
+      map((data) => {
+        data.forEach(scientist => {
+          allScientists.push(scientist.lastName + ' '
+              + scientist.firstName + ' ' + scientist.middleName);
+        });
+      }));
+  }
+
   pushDegrees(degrees): string[]{
     const degreesNames: string[] = [];
     for (const degree of degrees) {

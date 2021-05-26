@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import {MatSort} from '@angular/material/sort';
 import {MatPaginator} from '@angular/material/paginator';
 import {DataManipulationService} from '@services/data-manipulation.service';
-import {map, startWith} from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 import { ScientistModel } from '@models/scientist';
 import { DegreeModel } from '@models/degree';
 import {ENTER} from '@angular/cdk/keycodes';
@@ -39,23 +39,11 @@ export class ScientistComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.initForm();
     this.getAllScientists();
-    this.filteredIds = this.idCtrl.valueChanges
-      .pipe(
-        startWith(''),
-        map((id) => this.dataSource.data.filter(scientist => String(scientist.id).includes(id)))
-      );
-    this.filteredDegreesIds = this.degreeIdCtrl.valueChanges
-      .pipe(
-        startWith(''),
-        map((degree: string | null) => degree ? this.allDegrees.filter((a) =>
-          a.name.toLowerCase().indexOf(degree) === 0) : this.allDegrees.slice())
-      );
   }
 
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
-    this.getAllDegrees();
   }
 
   initForm(): void {
@@ -68,10 +56,34 @@ export class ScientistComponent implements OnInit, AfterViewInit {
     });
   }
 
+  filterData(ctrl: FormControl, dataVariation: string): void {
+    switch (dataVariation) {
+      case 'degreesIds': {
+        this.filteredDegreesIds = this.degreeIdCtrl.valueChanges
+          .pipe(
+            map((degree: string | null) => degree ? this.allDegrees.filter((a) =>
+              a.name.toLowerCase().indexOf(degree) === 0) : this.allDegrees.slice())
+          );
+        break;
+      }
+      case 'ids': {
+        this.filteredIds = this.idCtrl.valueChanges
+          .pipe(
+            map((id) => this.dataSource.data.filter(scientist => String(scientist.id).includes(id)))
+          );
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+
   getAllScientists(): void {
     this.dataManipulation.getScientists()
       .subscribe((data) => {
         this.dataSource.data = data;
+        this.getAllDegrees();
       });
   }
 
@@ -96,9 +108,9 @@ export class ScientistComponent implements OnInit, AfterViewInit {
 
   deleteScientist(id): void {
     this.dataManipulation.deleteScientist(id)
-      .subscribe(() => {
+      .subscribe((data) => {
         this.dataSource.data.forEach(el => {
-          if (el.id === id){
+          if (el === data){
             this.dataSource.data.splice(this.dataSource.data.indexOf(el));
           }
         });
@@ -116,7 +128,7 @@ export class ScientistComponent implements OnInit, AfterViewInit {
       )
       .subscribe((data) => {
         this.dataSource.data.forEach(el => {
-          if (el.id === data.id) {
+          if (el === data) {
             this.dataSource.data.splice(this.dataSource.data.indexOf(el), 1, data);
           }
         });
@@ -125,13 +137,10 @@ export class ScientistComponent implements OnInit, AfterViewInit {
   }
 
   add(event: MatChipInputEvent): void {
-    const input = event.input;
-    const value = event.value;
+    this.degreesIds.push(Number(event.value));
 
-    this.degreesIds.push(Number(value));
-
-    if (input) {
-      input.value = '';
+    if (event.input) {
+      event.input.value = '';
     }
   }
 
