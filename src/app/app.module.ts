@@ -21,6 +21,7 @@ import { DataManipulationModule } from './modules/data-manipulation.module';
 import { PublishingHouseComponent } from './components/data-manipulation/publishing-house/publishing-house.component';
 import { UniversityDepartmentComponent } from './components/data-manipulation/university-department/university-department.component';
 import { ScientistComponent } from './components/data-manipulation/scientist/scientist.component';
+import { DocExpertiseActComponent } from './components/documents/doc-expertise-act/doc-expertise-act.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { ScientistComponent } from './components/data-manipulation/scientist/sci
     DegreeComponent,
     PublishingHouseComponent,
     UniversityDepartmentComponent,
-    ScientistComponent
+    ScientistComponent,
+    DocExpertiseActComponent
   ],
   imports: [
     BrowserModule,

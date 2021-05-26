@@ -4,3 +4,7 @@
 main {
   background: white;
 }
+app-footer {
+  width: 100%;
+  display: table;
+}

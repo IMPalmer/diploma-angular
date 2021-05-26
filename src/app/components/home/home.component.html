@@ -1,12 +1,13 @@
 <app-layout>
-  <div fxLayoutAlign="center stretch" fxFlexFill>
+  <div fxLayoutAlign="center stretch" fxFlexFill fxLayout.xs="column">
   <div class="text-about">
-    <h1 class="main-text">Try to fill out and generate the required documents easily</h1>
-    <p class="text">Work with авторська довідка, протокол експертної комісії та акт експертизи</p>
-    <a class="document" routerLink="/authors-certificate">Go to documents</a>
+    <h1 class="main-text">Спробуйте легко заповнити та сформувати необхідні документи</h1>
+    <p class="text">Працюємо з авторською довідкою, протоколом експертної комісії та актом експертизи</p>
+    <a class="documents" routerLink="/authors-certificate">Перейти до документів</a>
+    <a class="add_data" routerLink="/data-manipulation/degree">Редагувати дані для автозаповнення</a>
   </div>
   <div class="logo-home">
-    <img src="assets/logo_home.png" fxHide.xs alt="home logo">
+    <img src="assets/logo_home.png" alt="home logo">
   </div>
   </div>
 </app-layout>

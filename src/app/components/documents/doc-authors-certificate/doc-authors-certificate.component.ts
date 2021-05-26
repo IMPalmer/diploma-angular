@@ -1,8 +1,8 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ENTER } from '@angular/cdk/keycodes';
 import { Observable } from 'rxjs';
-import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { map } from 'rxjs/operators';
 import { AutocompleteService } from '@services/autocomplete.service';
@@ -16,11 +16,10 @@ import { AuthService } from '@services/auth.service';
   templateUrl: './doc-authors-certificate.component.html',
   styleUrls: ['./doc-authors-certificate.component.css']
 })
-export class DocAuthorsCertificateComponent implements OnInit {
+export class DocAuthorsCertificateComponent implements OnInit, AfterViewInit {
 
   user: UserModel;
 
-  authorsCertificate: AuthorsCertificateModel;
   separatorKeysCodes: number[] = [ENTER];
   elVersion = false;
 
@@ -32,7 +31,8 @@ export class DocAuthorsCertificateComponent implements OnInit {
 
   authorCtrl = new FormControl();
   filteredAuthors: Observable<AuthorsModel[]>;
-  authors: AuthorsModel[] = []; allAuthors: AuthorsModel[] = [];
+  authors: AuthorsModel[] = [];
+  allAuthors: AuthorsModel[] = [];
 
   managerCtrl = new FormControl();
   filteredManagers: Observable<AuthorsModel[]>;
@@ -50,31 +50,31 @@ export class DocAuthorsCertificateComponent implements OnInit {
   @ViewChild('managerInput') managerInput: ElementRef<HTMLInputElement>;
   @ViewChild('universityDepartmentInput') universityDepartmentInput: ElementRef<HTMLInputElement>;
 
-  @ViewChild('autoAuthor') matAuthorAutocomplete: MatAutocomplete;
-  @ViewChild('autoManager') matManagerAutocomplete: MatAutocomplete;
-  @ViewChild('autoPublishingHouse') matPublishingHouseAutocomplete: MatAutocomplete;
-  @ViewChild('autoUniversityDepartment') matUniversityDepartmentAutocomplete: MatAutocomplete;
+  constructor(
+    private auth: AuthService,
+    private autocomplete: AutocompleteService,
+    private filesGeneration: FilesGenerationService) {
+  }
 
-  constructor(private auth: AuthService,
-              private autocomplete: AutocompleteService,
-              private filesGeneration: FilesGenerationService) {
-    this.filteredAuthors = this.authorCtrl.valueChanges.pipe(
-      map((author: string | null) => author ? this.allAuthors.filter((a) =>
-        a.fullName.toLowerCase().indexOf(author) === 0) : this.allAuthors.slice()));
+  ngOnInit(): void {
+    this.initForms();
+    this.autocomplete.getAllDataForAuthorsCertificate(
+      this.allAuthors,
+      this.allPublishingHouses,
+      this.allUniversityDepartments)
+      .subscribe();
+  }
+
+  ngAfterViewInit(): void {
     this.filteredManagers = this.managerCtrl.valueChanges.pipe(
       map((manager: string | null) => manager ? this.allAuthors.filter((a) =>
-          a.fullName.toLowerCase().indexOf(manager) === 0) : this.allAuthors.slice()));
+        a.fullName.toLowerCase().indexOf(manager) === 0) : this.allAuthors.slice()));
     this.filteredPublishingHouses = this.publishingHouseCtrl.valueChanges.pipe(
       map((publishingHouse: string | null) => publishingHouse ?
         this.autocomplete.filter(publishingHouse, this.allPublishingHouses) : this.allPublishingHouses.slice()));
     this.filteredUniversityDepartments = this.universityDepartmentCtrl.valueChanges.pipe(
       map((universityDepartment: string | null) => universityDepartment ?
         this.autocomplete.filter(universityDepartment, this.allUniversityDepartments) : this.allUniversityDepartments.slice()));
-  }
-
-  ngOnInit(): void {
-    this.initForms();
-    this.autocomplete.getAllData(this.allAuthors, this.allPublishingHouses, this.allUniversityDepartments).subscribe();
   }
 
   initForms(): void{
@@ -146,18 +146,25 @@ export class DocAuthorsCertificateComponent implements OnInit {
     }
   }
 
-  moveToSelectedTab(tabName: string): void {
-    for (let i = 0; i < document.querySelectorAll('.mat-tab-label-content').length; i++) {
-      if ((document.querySelectorAll('.mat-tab-label-content')[i] as HTMLElement).innerText === tabName)
-      {
-        (document.querySelectorAll('.mat-tab-label')[i] as HTMLElement).click();
-      }
-    }
+  filterData(ctrl: FormControl): void {
+    this.filteredAuthors = ctrl.valueChanges.pipe(
+      map((author: string | null) => author ? this.allAuthors.filter((a) =>
+        a.fullName.toLowerCase().indexOf(author) === 0) : this.allAuthors));
   }
 
-  downloadAuthorsCertificate(materialsFormGroup, dateFormGroup): void {
+  downloadAuthorsCertificate(
+    materialsFormGroup,
+    dateFormGroup,
+    publishingHouseCtrl,
+    universityDepartmentCtrl,
+    managerCtrl): void {
     this.filesGeneration.generateAuthorsCertificate(
-      this.executeAuthorsCertificateData(materialsFormGroup, dateFormGroup)).subscribe(
+      this.executeAuthorsCertificateData(
+        materialsFormGroup,
+        dateFormGroup,
+        publishingHouseCtrl,
+        universityDepartmentCtrl,
+        managerCtrl)).subscribe(
       result => {
         this.filesGeneration.downloadFile(result,
           'NoteOfAuthors_' + this.auth.user.lastName + '_' + this.auth.user.firstName,
@@ -165,17 +172,25 @@ export class DocAuthorsCertificateComponent implements OnInit {
       });
   }
 
-  executeAuthorsCertificateData(materialsFormGroup, dateFormGroup): AuthorsCertificateModel {
+  executeAuthorsCertificateData(
+    materialsFormGroup,
+    dateFormGroup,
+    publishingHouseCtrl,
+    universityDepartmentCtrl,
+    managerCtrl): AuthorsCertificateModel {
     return {
       format: 0,
       authors: this.authors,
-      publishingNameWithItsStatics: 'навчального посібника «' + materialsFormGroup.titleCtrl + '», '
-        + materialsFormGroup.numberOfPagesCtrl + ' сторінок, ' + materialsFormGroup.numberOfImagesCtrl
-        + ' рисунків, ' + materialsFormGroup.numberOfTablesCtrl + ' таблиць, ' + this.containsElVersion(this.elVersion),
-      publishingHouse: this.publishingHouseCtrl.value,
+      publishingNameWithItsStatics:
+        'навчального посібника «' + materialsFormGroup.titleCtrl + '», '
+        + materialsFormGroup.numberOfPagesCtrl + ' сторінок, '
+        + materialsFormGroup.numberOfImagesCtrl + ' рисунків, '
+        + materialsFormGroup.numberOfTablesCtrl + ' таблиць, '
+        + this.containsElVersion(this.elVersion),
+      publishingHouse: publishingHouseCtrl,
       publishingDate: dateFormGroup.dateCtrl.toISOString(),
-      universityDepartmentName: this.universityDepartmentCtrl.value,
-      fullNameOfChiefOfUniversityDepartment: this.managerCtrl.value
+      universityDepartmentName: universityDepartmentCtrl,
+      fullNameOfChiefOfUniversityDepartment: managerCtrl
     };
   }
 

@@ -6,6 +6,9 @@ table {
 th.mat-header-cell {
   text-align: left;
 }
+mat-icon.arrows {
+  font-size: large;
+}
 .scientist_clicked:hover, .scientist_clicked:active{
   color: #4E6AF9;
 }

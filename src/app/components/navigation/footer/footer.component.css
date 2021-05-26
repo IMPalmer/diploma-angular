@@ -3,3 +3,7 @@ mat-toolbar {
   color: black;
   border: 1px solid #E3E5F2;
 }
+div {
+  color: #a5a5a5;
+  font-size: small;
+}

@@ -1,16 +1,16 @@
 <app-layout>
   <div class="move_between_pages" fxLayoutAlign="space-between center">
     <a routerLink="/data-manipulation/scientist">
-      <mat-icon>keyboard_arrow_left</mat-icon> Scientist
+      <mat-icon class="arrows">keyboard_arrow_left</mat-icon> Вчений
     </a>
-    <span class="title">Publishing House</span>
+    <span class="title">Видавництво</span>
     <a routerLink="/data-manipulation/degree">
-      Degree <mat-icon>keyboard_arrow_right</mat-icon>
+      Науковий ступінь <mat-icon class="arrows">keyboard_arrow_right</mat-icon>
     </a>
   </div>
   <div fxLayoutAlign="center center">
     <mat-form-field fxFlex="40%">
-      <input matInput type="text" (keyup)="doFilter($any($event.target).value)" placeholder="filter">
+      <input matInput type="text" (keyup)="doFilter($any($event.target).value)" placeholder="Пошук">
     </mat-form-field>
   </div>
   <div fxLayout="column" fxLayoutAlign="start stretch">
@@ -22,12 +22,12 @@
       </ng-container>
 
       <ng-container matColumnDef="publishingHouse">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Publishing House </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Видавництво </th>
         <td mat-cell *matCellDef="let element"> {{element.name}} </td>
       </ng-container>
 
       <ng-container matColumnDef="delete">
-        <th mat-header-cell *matHeaderCellDef> Delete </th>
+        <th mat-header-cell *matHeaderCellDef> Видалити </th>
         <td mat-cell *matCellDef="let element">
           <button mat-icon-button class="publishing_house_clicked" (click)="deletePublishingHouse(element.id)">
             <mat-icon class="mat-18">delete</mat-icon>
@@ -44,7 +44,7 @@
       <form  autocomplete="off" novalidate fxLayoutGap="10px" [formGroup]="publishingHouseFormGroup">
 
         <mat-form-field>
-          <mat-label>id</mat-label>
+          <mat-label>Виберіть id для оновлення даних</mat-label>
           <input matInput
                  [formControl]="idCtrl"
                  type="text"
@@ -57,12 +57,12 @@
         </mat-form-field>
 
         <mat-form-field appearance="standard">
-          <mat-label>name</mat-label>
+          <mat-label>Назва видавництва</mat-label>
           <input matInput formControlName="nameCtrl" type="text">
         </mat-form-field>
 
-        <button mat-flat-button class="publishing_house_clicked" type="submit" (click)="addPublishingHouse(publishingHouseFormGroup.value)">Add</button>
-        <button mat-flat-button class="publishing_house_clicked" type="submit" (click)="updatePublishingHouse(idCtrl.value, publishingHouseFormGroup.value)">Update</button>
+        <button mat-flat-button class="publishing_house_clicked" type="submit" (click)="addPublishingHouse(publishingHouseFormGroup.value)">Додати</button>
+        <button mat-flat-button class="publishing_house_clicked" type="submit" (click)="updatePublishingHouse(idCtrl.value, publishingHouseFormGroup.value)">Оновити дані</button>
       </form>
     </div>
   </div>

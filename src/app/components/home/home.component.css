@@ -1,6 +1,7 @@
 .main-text {
-  font-size: 11vmin;
+  font-size: 10vmin;
   line-height: 1em;
+  font-weight: bold;
 }
 div.text-about{
   margin: 4em 2em 1em 5em;
@@ -14,12 +15,22 @@ div.logo-home{
 img {
   width: 75vmin;
 }
-a.document {
+a.documents {
   text-decoration: none;
   padding: 4px;
   color: white;
   background: #4E6AF9;
   border: 1px solid #4E6AF9;
+  border-radius: 10px;
+  margin-left: 9px;
+  margin-right: 9px;
+}
+a.add_data {
+  text-decoration: none;
+  padding: 4px;
+  color: white;
+  background: black;
+  border: 1px solid black;
   border-radius: 10px;
   margin-left: 9px;
   margin-right: 9px;

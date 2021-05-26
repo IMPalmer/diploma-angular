@@ -1,16 +1,16 @@
 <app-layout>
   <div class="move_between_pages" fxLayoutAlign="space-between center">
     <a routerLink="/data-manipulation/university-department">
-      <mat-icon>keyboard_arrow_left</mat-icon> University Department
+      <mat-icon class="arrows">keyboard_arrow_left</mat-icon> Кафедра
     </a>
-    <span class="title">Scientist</span>
+    <span class="title">Вчений</span>
     <a routerLink="/data-manipulation/publishing-house">
-      PublishingHouse<mat-icon>keyboard_arrow_right</mat-icon>
+      Видавництво <mat-icon class="arrows">keyboard_arrow_right</mat-icon>
     </a>
   </div>
   <div fxLayoutAlign="center center">
     <mat-form-field fxFlex="40%">
-      <input matInput type="text" (keyup)="doFilter($any($event.target).value)" placeholder="filter">
+      <input matInput type="text" (keyup)="doFilter($any($event.target).value)" placeholder="Пошук">
     </mat-form-field>
   </div>
   <div fxLayout="column" fxLayoutAlign="start stretch">
@@ -22,30 +22,30 @@
       </ng-container>
 
       <ng-container matColumnDef="firstName">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> First name </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Ім'я </th>
         <td mat-cell *matCellDef="let element"> {{element.firstName}} </td>
       </ng-container>
 
       <ng-container matColumnDef="lastName">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Last name </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Прізвище </th>
         <td mat-cell *matCellDef="let element"> {{element.lastName}} </td>
       </ng-container>
 
       <ng-container matColumnDef="middleName">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Middle name </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> По батькові </th>
         <td mat-cell *matCellDef="let element"> {{element.middleName}} </td>
       </ng-container>
 
       <ng-container matColumnDef="degrees">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Degrees </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Наукові ступені </th>
         <td mat-cell *matCellDef="let element">
           <span *ngFor="let degree of element.degrees">{{degree.name}} </span> </td>
       </ng-container>
 
       <ng-container matColumnDef="delete">
-        <th mat-header-cell *matHeaderCellDef> Delete </th>
+        <th mat-header-cell *matHeaderCellDef> Видалити </th>
         <td mat-cell *matCellDef="let element">
-          <button mat-icon-button class="scientist_clicked" ><!--(click)="deleteUniversityDepartment(element.id)"-->
+          <button mat-icon-button class="scientist_clicked" (click)="deleteScientist(element.id)">
             <mat-icon class="mat-18">delete</mat-icon>
           </button>
         </td>
@@ -60,12 +60,12 @@
       <form  autocomplete="off" novalidate fxLayoutGap="10px" [formGroup]="scientistFormGroup">
 
         <mat-form-field>
-          <mat-label>id</mat-label>
+          <mat-label>Виберіть id для оновлення даних</mat-label>
           <input matInput
                  [formControl]="idCtrl"
                  type="text"
-                 [matAutocomplete]="auto">
-          <mat-autocomplete #auto='matAutocomplete'>
+                 [matAutocomplete]="autoId">
+          <mat-autocomplete #autoId='matAutocomplete'>
             <mat-option *ngFor="let scientist of filteredIds | async" [value]="scientist.id">
               {{scientist.id}}
             </mat-option>
@@ -73,35 +73,47 @@
         </mat-form-field>
 
         <mat-form-field appearance="standard">
-          <mat-label>first name</mat-label>
+          <mat-label>Ім'я</mat-label>
           <input matInput formControlName="firstNameCtrl" type="text">
         </mat-form-field>
 
         <mat-form-field appearance="standard">
-          <mat-label>last name</mat-label>
+          <mat-label>Прізвище</mat-label>
           <input matInput formControlName="lastNameCtrl" type="text">
         </mat-form-field>
 
         <mat-form-field appearance="standard">
-          <mat-label>middle name</mat-label>
+          <mat-label>По батькові</mat-label>
           <input matInput formControlName="middleNameCtrl" type="text">
         </mat-form-field>
 
         <mat-form-field>
-          <mat-label>degree id</mat-label>
-          <input matInput
-                 [formControl]="degreeIdCtrl"
-                 type="text"
-                 [matAutocomplete]="auto">
-          <mat-autocomplete #auto='matAutocomplete'>
-            <mat-option *ngFor="let scientist of filteredIds | async" [value]="scientist.id">
-              {{scientist.id}}
+          <mat-label>Вказати id наукових ступенів</mat-label>
+          <mat-chip-list  #chipList formControlName="degreeIdCtrl">
+            <mat-chip
+              *ngFor="let degree of degreesIds"
+              selectable removable
+              (removed)="remove(degree)">
+              {{degree}}
+              <mat-icon matChipRemove>cancel</mat-icon>
+            </mat-chip>
+            <input matInput
+                   [formControl]="degreeIdCtrl"
+                   type="text" #degreeInput
+                   [matAutocomplete]="autoDegreeId"
+                   [matChipInputFor]="chipList"
+                   [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                   (matChipInputTokenEnd)="add($event)">
+          </mat-chip-list>
+          <mat-autocomplete #autoDegreeId='matAutocomplete' (optionSelected)="selected($event)">
+            <mat-option *ngFor="let degree of filteredDegreesIds | async" [value]="degree.id">
+              {{degree.name}}
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>
 
-        <button mat-flat-button class="scientist_clicked" type="submit" (click)="addScientist(scientistFormGroup.value, degreeIdCtrl.value)">Add</button>
-        <button mat-flat-button class="scientist_clicked" type="submit" ><!--(click)="updateUniversityDepartment(idCtrl.value, universityDepartmentFormGroup.value)">-->Update</button>
+        <button mat-flat-button class="scientist_clicked" type="submit" (click)="addScientist(scientistFormGroup.value)">Додати</button>
+        <button mat-flat-button class="scientist_clicked" type="submit" (click)="updateScientist(idCtrl.value, scientistFormGroup.value)">>Оновити дані</button>
       </form>
     </div>
   </div>

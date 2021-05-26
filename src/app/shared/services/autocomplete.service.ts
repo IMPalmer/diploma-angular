@@ -19,9 +19,9 @@ export class AutocompleteService {
 
   constructor(private auth: AuthService, private http: HttpClient) { }
 
-  getAllData(allAuthors: AuthorsModel[],
-             allPublishingHouses: string[],
-             allUniversityDepartments: string[]):
+  getAllDataForAuthorsCertificate(allAuthors: AuthorsModel[],
+                                  allPublishingHouses: string[],
+                                  allUniversityDepartments: string[]):
     Observable<void> {
     return this.http.get<Array<ScientistModel>>(`${environment.apiUrl}Scientist`,
       {headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.auth.user.accessToken)}).pipe(
@@ -52,6 +52,18 @@ export class AutocompleteService {
             );
           }
         ));
+      }));
+  }
+
+  getAllDataForExpertiseAct(allScientists: AuthorsModel[]): Observable<void> {
+    return this.http.get<Array<ScientistModel>>(`${environment.apiUrl}Scientist`,
+      {headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.auth.user.accessToken)}).pipe(
+      map((data) => {
+        data.forEach(scientist => {
+          allScientists.push({fullName: scientist.lastName + ' '
+              + scientist.firstName + ' ' + scientist.middleName,
+            degrees: this.pushDegrees(scientist.degrees)});
+        });
       }));
   }
 

@@ -5,6 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '@services/auth.service';
 import { UserModel } from '@models/user';
+import {ExpertiseActModel} from '@models/expertise-act';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,14 @@ export class FilesGenerationService {
 
   generateAuthorsCertificate(authorsCertificate: AuthorsCertificateModel): Observable<ArrayBuffer> {
     return this.http.post(`${environment.apiUrl}FilesGeneration/generate-notes-of-authors`,
-      authorsCertificate, {headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.auth.user.accessToken), responseType: 'arraybuffer' });
+      authorsCertificate,
+      {headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.auth.user.accessToken), responseType: 'arraybuffer' });
+  }
+
+  generateExpertiseAct(expertiseAct: ExpertiseActModel): Observable<ArrayBuffer> {
+    return this.http.post(`${environment.apiUrl}FilesGeneration/generate-expertise-act`,
+      expertiseAct,
+      {headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.auth.user.accessToken), responseType: 'arraybuffer' });
   }
 
   downloadFile(data: ArrayBuffer, fileName: string, contentType: string): void {
