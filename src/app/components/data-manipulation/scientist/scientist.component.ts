@@ -44,6 +44,7 @@ export class ScientistComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
+    /*this.filteredDegreesIds.forEach((degree) => {degree.id = allDegrees.})*/
   }
 
   initForm(): void {

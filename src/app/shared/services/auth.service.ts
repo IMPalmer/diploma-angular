@@ -55,7 +55,16 @@ export class AuthService {
   registration(registeredUser: RegistrationModel): Observable<UserModel> {
     return this.http.post<UserModel>(`${environment.apiUrl}Identity/register`,
       {email: registeredUser.email, password: registeredUser.password,
-        firstName: registeredUser.firstName, lastName: registeredUser.lastName});
+        firstName: registeredUser.firstName, lastName: registeredUser.lastName}).pipe(map((data) => (
+      this.userData = Object.values(data), {
+        id: this.userData[0].id,
+        email: this.userData[0].email,
+        firstName: this.userData[0].firstName,
+        lastName: this.userData[0].lastName,
+        createDateTime: this.userData[0].createDateTime,
+        accessToken: this.userData[1],
+        refreshToken: this.userData[2]
+      })));
   }
 
   refresh(accessToken: string, refreshToken: string): Observable<TokensPairModel> {
