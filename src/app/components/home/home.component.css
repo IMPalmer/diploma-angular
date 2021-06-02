@@ -10,7 +10,7 @@ p.text {
   font-size: medium;
 }
 div.logo-home{
-  margin: 4vmin 5vmin 1vmin 0vmin;
+  margin: 4vmin 5vmin 1vmin 0;
 }
 img {
   width: 75vmin;

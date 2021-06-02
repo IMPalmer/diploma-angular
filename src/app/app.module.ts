@@ -23,7 +23,9 @@ import { UniversityDepartmentComponent } from '@components/data-manipulation/uni
 import { ScientistComponent } from '@components/data-manipulation/scientist/scientist.component';
 import { DocExpertiseActComponent } from '@components/documents/doc-expertise-act/doc-expertise-act.component';
 import { DocumentsModule } from '@modules/documents.module';
-import { DocExpertCommissionProtocolOfMeetingComponent } from './components/documents/doc-expert-commission-protocol-of-meeting/doc-expert-commission-protocol-of-meeting.component';
+import { DocExpertCommissionProtocolOfMeetingComponent } from '@components/documents/doc-expert-commission-protocol-of-meeting/doc-expert-commission-protocol-of-meeting.component';
+import { SpinnerComponent } from '@components/navigation/spinner/spinner.component';
+import {SpinnerInterceptor} from '@interceptors/spinner.interceptor';
 
 @NgModule({
   declarations: [
@@ -41,7 +43,8 @@ import { DocExpertCommissionProtocolOfMeetingComponent } from './components/docu
     UniversityDepartmentComponent,
     ScientistComponent,
     DocExpertiseActComponent,
-    DocExpertCommissionProtocolOfMeetingComponent
+    DocExpertCommissionProtocolOfMeetingComponent,
+    SpinnerComponent
   ],
   imports: [
     BrowserModule,
@@ -55,7 +58,10 @@ import { DocExpertCommissionProtocolOfMeetingComponent } from './components/docu
     DataManipulationModule,
     DocumentsModule
   ],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: SpinnerInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

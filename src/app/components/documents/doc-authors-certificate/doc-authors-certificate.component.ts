@@ -137,7 +137,7 @@ export class DocAuthorsCertificateComponent implements OnInit {
         this.filteredAuthors = ctrl.valueChanges.pipe(
           startWith(''),
           map((author) => this.allAuthors.filter((a) =>
-            a.fullName.toLowerCase().indexOf(author.toLowerCase()) === 0)));
+            a.fullName.toLowerCase().indexOf(author) === 0)));
         break;
       }
       case 'manager': {
