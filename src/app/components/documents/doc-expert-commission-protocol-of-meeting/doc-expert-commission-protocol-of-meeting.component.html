@@ -1,7 +1,7 @@
 <app-layout>
   <div fxLayoutAlign="center stretch" fxLayout.xs="column">
 
-    <div class="text-another-document">
+    <div class="choose-another-document">
       <h2>Обрати інший документ</h2>
       <a class="document" routerLink="/documents/authors-certificate">
         Авторська довідка</a><br><br>
@@ -68,7 +68,7 @@
                 [matAutocomplete]="autoHeadOfTheCommissionCtrl"
                 placeholder="Голова експертної комісії..."
                 required
-                (keypress)="filterData(headOfTheCommissionCtrl)">
+                (click)="filterData(headOfTheCommissionCtrl)">
               <mat-autocomplete
                 #autoHeadOfTheCommissionCtrl="matAutocomplete"
                 (optionSelected)="selected($event, 'headOfTheCommission')">
@@ -89,7 +89,7 @@
                 #secretaryOfTheCommissionInput
                 [formControl]="secretaryOfTheCommissionCtrl"
                 [matAutocomplete]="autoSecretaryOfTheCommission"
-                (keypress)="filterData(secretaryOfTheCommissionCtrl)">
+                (click)="filterData(secretaryOfTheCommissionCtrl)">
               <mat-autocomplete
                 #autoSecretaryOfTheCommission="matAutocomplete"
                 (optionSelected)="selected($event, 'secretaryOfTheCommission')">
@@ -121,7 +121,7 @@
                 [matAutocomplete]="autoMemberOfTheCommission"
                 [matChipInputFor]="membersOfTheCommissionChipList"
                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                (keypress)="filterData(membersOfTheCommissionCtrl)"
+                (click)="filterData(membersOfTheCommissionCtrl)"
                 (matChipInputTokenEnd)="add($event, 'memberOfTheCommission')">
             </mat-chip-list>
             <mat-autocomplete
@@ -151,7 +151,7 @@
                 [matAutocomplete]="autoSpeakerOfTheCommission"
                 [matChipInputFor]="speakersOfTheCommissionChipList"
                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                (keypress)="filterData(speakersOfTheCommissionCtrl)"
+                (click)="filterData(speakersOfTheCommissionCtrl)"
                 (matChipInputTokenEnd)="add($event, 'speakersOfTheCommission')">
             </mat-chip-list>
             <mat-autocomplete
@@ -277,7 +277,7 @@
               #chiefOfSecurityDepartmentInput
               [formControl]="chiefOfSecurityDepartmentCtrl"
               [matAutocomplete]="autoChiefOfSecurityDepartment"
-              (keypress)="filterData(chiefOfSecurityDepartmentCtrl)">
+              (click)="filterData(chiefOfSecurityDepartmentCtrl)">
             <mat-autocomplete
               #autoChiefOfSecurityDepartment="matAutocomplete"
               (optionSelected)="selected($event, 'chiefOfSecurityDepartment')">

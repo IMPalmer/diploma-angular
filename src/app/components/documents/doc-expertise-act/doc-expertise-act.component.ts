@@ -6,7 +6,7 @@ import {AuthService} from '@services/auth.service';
 import {AutocompleteService} from '@services/autocomplete.service';
 import {FilesGenerationService} from '@services/files-generation.service';
 import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
-import {map} from 'rxjs/operators';
+import {map, startWith} from 'rxjs/operators';
 import {ENTER} from '@angular/cdk/keycodes';
 import {MatChipInputEvent} from '@angular/material/chips';
 import {CommissionModel, ExpertiseActModel} from '@models/expertise-act';
@@ -53,11 +53,12 @@ export class DocExpertiseActComponent implements OnInit {
   constructor(
     private auth: AuthService,
     private autocomplete: AutocompleteService,
-    private filesGeneration: FilesGenerationService) { }
+    private filesGeneration: FilesGenerationService) {
+  }
 
   ngOnInit(): void {
-    this.initForms();
     this.autocomplete.getAllDataForExpertiseAct(this.allScientists).subscribe();
+    this.initForms();
   }
 
   initForms(): void{
@@ -89,8 +90,9 @@ export class DocExpertiseActComponent implements OnInit {
 
   filterData(ctrl: FormControl): void {
     this.filteredScientists = ctrl.valueChanges.pipe(
-      map((author: string | null) => author ? this.allScientists.filter((a) =>
-        a.fullName.toLowerCase().indexOf(author) === 0) : this.allScientists));
+      startWith(''),
+      map((author) => this.allScientists.filter((a) =>
+        a.fullName.toLowerCase().indexOf(author.toLowerCase()) === 0)));
   }
 
   add(event: MatChipInputEvent, dataVariation: string): void {

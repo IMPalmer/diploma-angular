@@ -14,8 +14,8 @@ h2 {
   font-size: 8vmin;
   line-height: 1em;
 }
-div.text-another-document{
-  margin: 4em 1em 1em 5em;
+div.choose-another-document{
+  margin: 4vmin 2vmin 1vmin 5vmin;
 }
 a.document {
   text-decoration: none;

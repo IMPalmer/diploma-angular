@@ -1,10 +1,8 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import {Component, OnInit, ViewChild, AfterViewInit, ElementRef} from '@angular/core';
 import { DegreeModel } from '@models/degree';
 import { MatTableDataSource } from '@angular/material/table';
 import { DataManipulationService } from '@services/data-manipulation.service';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 
@@ -16,24 +14,19 @@ import { MatPaginator } from '@angular/material/paginator';
 export class DegreeComponent implements OnInit, AfterViewInit {
 
   degreeFormGroup: FormGroup;
-  idCtrl = new FormControl();
-  public displayedColumns = ['id', 'degree', 'delete'];
+  idCtrl = null;
+  public displayedColumns = ['degree', 'update', 'delete'];
   public dataSource = new MatTableDataSource<DegreeModel>();
-  filteredIds: Observable<DegreeModel[]>;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild('degreeInput') degreeInput: ElementRef<HTMLInputElement>;
 
   constructor(private dataManipulation: DataManipulationService) { }
 
   ngOnInit(): void {
     this.initForm();
     this.getAllDegrees();
-    this.filteredIds = this.idCtrl.valueChanges
-      .pipe(
-        startWith(''),
-        map((id) => this.dataSource.data.filter(degree => String(degree.id).includes(id)))
-      );
   }
 
   ngAfterViewInit(): void {
@@ -43,7 +36,6 @@ export class DegreeComponent implements OnInit, AfterViewInit {
 
   initForm(): void {
     this.degreeFormGroup = new FormGroup({
-      idCtrl: new FormControl(''),
       nameCtrl: new FormControl('')
     });
   }
@@ -55,19 +47,34 @@ export class DegreeComponent implements OnInit, AfterViewInit {
       });
   }
 
-  addDegree(degreeFormGroup): void {
-    this.dataManipulation.addDegree(degreeFormGroup.nameCtrl)
-      .subscribe((data) => {
-        this.dataSource.data.push(data);
-        this.dataSource.data = [...this.dataSource.data];
-      });
+  addDegree(): void {
+    if (this.idCtrl === null) {
+      this.dataManipulation.addDegree(this.degreeInput.nativeElement.value)
+        .subscribe((data) => {
+          this.dataSource.data.push(data);
+          this.dataSource.data = [...this.dataSource.data];
+          this.degreeInput.nativeElement.value = '';
+        });
+    } else {
+      this.dataManipulation.updateDegree(this.idCtrl, this.degreeInput.nativeElement.value)
+        .subscribe((data) => {
+          this.dataSource.data.forEach(el => {
+            if (el.id === data.id) {
+              this.dataSource.data.splice(this.dataSource.data.indexOf(el), 1, data);
+            }
+          });
+          this.dataSource.data = [...this.dataSource.data];
+          this.degreeInput.nativeElement.value = '';
+          this.idCtrl = null;
+        });
+    }
   }
 
   deleteDegree(id): void {
     this.dataManipulation.deleteDegree(id)
-      .subscribe((data) => {
+      .subscribe(() => {
         this.dataSource.data.forEach(el => {
-          if (el.name === data.name){
+          if (el.id === id){
             this.dataSource.data.splice(this.dataSource.data.indexOf(el));
           }
         });
@@ -75,16 +82,9 @@ export class DegreeComponent implements OnInit, AfterViewInit {
       });
   }
 
-  updateDegree(idCtrl, degreeFormGroup): void {
-    this.dataManipulation.updateDegree(idCtrl, degreeFormGroup.nameCtrl)
-      .subscribe((data) => {
-        this.dataSource.data.forEach(el => {
-          if (el.id === data.id) {
-            this.dataSource.data.splice(this.dataSource.data.indexOf(el), 1, data);
-          }
-        });
-        this.dataSource.data = [...this.dataSource.data];
-      });
+  updateDegree(element): void {
+    this.degreeInput.nativeElement.value = element.name;
+    this.idCtrl = element.id;
   }
 
   public doFilter(value: string): void {

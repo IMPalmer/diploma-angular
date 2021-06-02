@@ -1,10 +1,10 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ENTER } from '@angular/cdk/keycodes';
 import { Observable } from 'rxjs';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
-import { map } from 'rxjs/operators';
+import {map, startWith} from 'rxjs/operators';
 import { AutocompleteService } from '@services/autocomplete.service';
 import { FilesGenerationService } from '@services/files-generation.service';
 import { AuthorsCertificateModel, AuthorsModel } from '@models/authors-certificate';
@@ -16,7 +16,7 @@ import { AuthService } from '@services/auth.service';
   templateUrl: './doc-authors-certificate.component.html',
   styleUrls: ['./doc-authors-certificate.component.css']
 })
-export class DocAuthorsCertificateComponent implements OnInit, AfterViewInit {
+export class DocAuthorsCertificateComponent implements OnInit {
 
   user: UserModel;
 
@@ -65,18 +65,6 @@ export class DocAuthorsCertificateComponent implements OnInit, AfterViewInit {
       .subscribe();
   }
 
-  ngAfterViewInit(): void {
-    this.filteredManagers = this.managerCtrl.valueChanges.pipe(
-      map((manager: string | null) => manager ? this.allAuthors.filter((a) =>
-        a.fullName.toLowerCase().indexOf(manager) === 0) : this.allAuthors.slice()));
-    this.filteredPublishingHouses = this.publishingHouseCtrl.valueChanges.pipe(
-      map((publishingHouse: string | null) => publishingHouse ?
-        this.autocomplete.filter(publishingHouse, this.allPublishingHouses) : this.allPublishingHouses.slice()));
-    this.filteredUniversityDepartments = this.universityDepartmentCtrl.valueChanges.pipe(
-      map((universityDepartment: string | null) => universityDepartment ?
-        this.autocomplete.filter(universityDepartment, this.allUniversityDepartments) : this.allUniversityDepartments.slice()));
-  }
-
   initForms(): void{
     this.authorsFormGroup = new FormGroup({
       authorCtrl: new FormControl('', [Validators.required])
@@ -100,17 +88,14 @@ export class DocAuthorsCertificateComponent implements OnInit, AfterViewInit {
   }
 
   add(event: MatChipInputEvent): void {
-    const input = event.input;
-    const value = event.value;
-
     this.allAuthors.forEach(author => {
-      if (author.fullName.toLowerCase().includes(value.toLowerCase())) {
+      if (author.fullName.toLowerCase().includes(event.value.toLowerCase())) {
         this.authors.push(author);
       }
     });
 
-    if (input) {
-      input.value = '';
+    if (event.input) {
+      event.input.value = '';
     }
   }
 
@@ -146,10 +131,40 @@ export class DocAuthorsCertificateComponent implements OnInit, AfterViewInit {
     }
   }
 
-  filterData(ctrl: FormControl): void {
-    this.filteredAuthors = ctrl.valueChanges.pipe(
-      map((author: string | null) => author ? this.allAuthors.filter((a) =>
-        a.fullName.toLowerCase().indexOf(author) === 0) : this.allAuthors));
+  filterData(ctrl: FormControl, dataVariation: string): void {
+    switch (dataVariation) {
+      case 'scientist': {
+        this.filteredAuthors = ctrl.valueChanges.pipe(
+          startWith(''),
+          map((author) => this.allAuthors.filter((a) =>
+            a.fullName.toLowerCase().indexOf(author.toLowerCase()) === 0)));
+        break;
+      }
+      case 'manager': {
+        this.filteredManagers = ctrl.valueChanges.pipe(
+          startWith(''),
+          map((manager: string | null) => this.allAuthors.filter((a) =>
+            a.fullName.toLowerCase().indexOf(manager) === 0)));
+        break;
+      }
+      case 'publishingHouse': {
+        this.filteredPublishingHouses = ctrl.valueChanges.pipe(
+          startWith(''),
+          map((publishingHouse: string | null) =>
+            this.autocomplete.filter(publishingHouse, this.allPublishingHouses)));
+        break;
+      }
+      case 'universityDepartment': {
+        this.filteredUniversityDepartments = ctrl.valueChanges.pipe(
+          startWith(''),
+          map((universityDepartment: string | null) =>
+            this.autocomplete.filter(universityDepartment, this.allUniversityDepartments)));
+        break;
+      }
+      default: {
+        break;
+      }
+    }
   }
 
   downloadAuthorsCertificate(

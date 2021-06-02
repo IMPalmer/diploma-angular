@@ -4,13 +4,13 @@
   font-weight: bold;
 }
 div.text-about{
-  margin: 4em 2em 1em 5em;
+  margin: 4vmin 2vmin 1vmin 5vmin;
 }
 p.text {
   font-size: medium;
 }
 div.logo-home{
-  margin: 4em 5em 1em 0;
+  margin: 4vmin 5vmin 1vmin 0vmin;
 }
 img {
   width: 75vmin;

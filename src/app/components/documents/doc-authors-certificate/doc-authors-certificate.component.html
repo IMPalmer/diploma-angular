@@ -1,7 +1,7 @@
 <app-layout>
   <div fxLayoutAlign="center stretch" fxLayout.xs="column">
 
-    <div class="text-another-document">
+    <div class="choose-another-document">
       <h2>Обрати інший документ</h2>
       <a class="active_document" routerLink="/documents/authors-certificate">Авторська довідка</a><br><br>
       <a class="document" routerLink="/documents/expertise-act">Акт експертизи</a><br><br>
@@ -31,7 +31,7 @@
                 [matAutocomplete]="autoAuthor"
                 [matChipInputFor]="chipList"
                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                (keypress)="filterData(authorCtrl)"
+                (click)="filterData(authorCtrl, 'scientist')"
                 (matChipInputTokenEnd)="add($event)">
             </mat-chip-list>
             <mat-autocomplete
@@ -116,6 +116,7 @@
               type="text"
               [matAutocomplete]="autoPublishingHouse"
               placeholder="Видаництво..."
+              (click)="filterData(publishingHouseCtrl, 'publishingHouse')"
               required>
             <mat-autocomplete
               #autoPublishingHouse="matAutocomplete"
@@ -147,6 +148,7 @@
               [matAutocomplete]="autoManager"
               type="text"
               placeholder="Завідувач..."
+              (click)="filterData(managerCtrl, 'manager')"
               required>
             <mat-autocomplete
               #autoManager="matAutocomplete"
@@ -168,6 +170,7 @@
               type="text"
               [matAutocomplete]="autoUniversityDepartment"
               placeholder="Кафедра університету..."
+              (click)="filterData(universityDepartmentCtrl, 'universityDepartment')"
               required>
             <mat-autocomplete
               #autoUniversityDepartment="matAutocomplete"

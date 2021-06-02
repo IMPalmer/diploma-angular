@@ -16,11 +16,6 @@
   <div fxLayout="column" fxLayoutAlign="start stretch">
     <table mat-table [dataSource]="dataSource" matSort>
 
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Id </th>
-        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-      </ng-container>
-
       <ng-container matColumnDef="fullName">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Повна назва кафедри</th>
         <td mat-cell *matCellDef="let element"> {{element.fullName}} </td>
@@ -29,6 +24,15 @@
       <ng-container matColumnDef="shortName">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Коротка назва кафедри </th>
         <td mat-cell *matCellDef="let element"> {{element.shortName}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="update">
+        <th mat-header-cell *matHeaderCellDef> Оновити </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button class="degree_clicked" (click)="updateUniversityDepartment(element)">
+            <mat-icon class="mat-18">system_update</mat-icon>
+          </button>
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="delete">
@@ -43,36 +47,28 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-    <mat-paginator [pageSize]="7" [pageSizeOptions]="[2, 5, 7]">
+    <mat-paginator [pageSize]="6" [pageSizeOptions]="[6, 12, 18]">
     </mat-paginator>
     <div fxLayoutAlign="center center">
       <form  autocomplete="off" novalidate fxLayoutGap="10px" [formGroup]="universityDepartmentFormGroup">
 
-        <mat-form-field>
-          <mat-label>Виберіть id для оновлення даних</mat-label>
-          <input matInput
-                 [formControl]="idCtrl"
-                 type="text"
-                 [matAutocomplete]="auto">
-          <mat-autocomplete #auto='matAutocomplete'>
-            <mat-option *ngFor="let universityDepartment of filteredIds | async" [value]="universityDepartment.id">
-              {{universityDepartment.id}}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-
         <mat-form-field appearance="standard">
           <mat-label>Повна назва кафедри</mat-label>
-          <input matInput formControlName="fullNameCtrl" type="text">
+          <input matInput
+                 #fullNameInput
+                 formControlName="fullNameCtrl"
+                 type="text">
         </mat-form-field>
 
         <mat-form-field appearance="standard">
           <mat-label>Коротка назва кафедри</mat-label>
-          <input matInput formControlName="shortNameCtrl" type="text">
+          <input matInput
+                 #shortNameInput
+                 formControlName="shortNameCtrl"
+                 type="text">
         </mat-form-field>
 
-        <button mat-flat-button class="university_department_clicked" type="submit" (click)="addUniversityDepartment(universityDepartmentFormGroup.value)">Додати</button>
-        <button mat-flat-button class="university_department_clicked" type="submit" (click)="updateUniversityDepartment(idCtrl.value, universityDepartmentFormGroup.value)">Оновити дані</button>
+        <button mat-flat-button class="university_department_clicked" type="submit" (click)="addUniversityDepartment()">Додати</button>
       </form>
     </div>
   </div>

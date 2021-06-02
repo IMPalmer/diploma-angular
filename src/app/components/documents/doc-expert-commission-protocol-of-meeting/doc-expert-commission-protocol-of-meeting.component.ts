@@ -5,7 +5,7 @@ import {Observable} from 'rxjs';
 import {AuthService} from '@services/auth.service';
 import {AutocompleteService} from '@services/autocomplete.service';
 import {FilesGenerationService} from '@services/files-generation.service';
-import {map} from 'rxjs/operators';
+import {map, startWith} from 'rxjs/operators';
 import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import {MatChipInputEvent} from '@angular/material/chips';
 import {ExpertCommissionProtocolOfMeetingModel} from '@models/expert-commission-protocol-of-meeting';
@@ -85,8 +85,9 @@ export class DocExpertCommissionProtocolOfMeetingComponent implements OnInit {
 
   filterData(ctrl: FormControl): void {
     this.filteredScientists = ctrl.valueChanges.pipe(
-      map((scientist: string | null) => scientist ? this.allScientists.filter((name) =>
-        name.toLowerCase().indexOf(scientist) === 0) : this.allScientists));
+      startWith(''),
+      map((scientist: string | null) => this.allScientists.filter((name) =>
+        name.toLowerCase().indexOf(scientist.toLowerCase()) === 0)));
   }
 
   add(event: MatChipInputEvent, dataVariation: string): void {

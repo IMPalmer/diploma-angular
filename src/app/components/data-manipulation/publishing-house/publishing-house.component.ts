@@ -1,12 +1,10 @@
-import {Component, OnInit, ViewChild, AfterViewInit} from '@angular/core';
+import {Component, OnInit, ViewChild, AfterViewInit, ElementRef} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatTableDataSource} from '@angular/material/table';
 import {PublishingHouseModel} from '@models/publishing-house';
-import {Observable} from 'rxjs';
 import {MatSort} from '@angular/material/sort';
 import {MatPaginator} from '@angular/material/paginator';
 import {DataManipulationService} from '@services/data-manipulation.service';
-import {map, startWith} from 'rxjs/operators';
 
 @Component({
   selector: 'app-publishing-house',
@@ -16,24 +14,19 @@ import {map, startWith} from 'rxjs/operators';
 export class PublishingHouseComponent implements OnInit, AfterViewInit {
 
   publishingHouseFormGroup: FormGroup;
-  idCtrl = new FormControl();
-  public displayedColumns = ['id', 'publishingHouse', 'delete'];
+  idCtrl = null;
+  public displayedColumns = [ 'publishingHouse', 'update', 'delete'];
   public dataSource = new MatTableDataSource<PublishingHouseModel>();
-  filteredIds: Observable<PublishingHouseModel[]>;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild('publishingHouseInput') publishingHouseInput: ElementRef<HTMLInputElement>;
 
   constructor(private dataManipulation: DataManipulationService) { }
 
   ngOnInit(): void {
     this.initForm();
     this.getAllPublishingHouses();
-    this.filteredIds = this.idCtrl.valueChanges
-      .pipe(
-        startWith(''),
-        map((id) => this.dataSource.data.filter(publishingHouse => String(publishingHouse.id).includes(id)))
-      );
   }
 
   ngAfterViewInit(): void {
@@ -43,7 +36,6 @@ export class PublishingHouseComponent implements OnInit, AfterViewInit {
 
   initForm(): void {
     this.publishingHouseFormGroup = new FormGroup({
-      idCtrl: new FormControl(''),
       nameCtrl: new FormControl('')
     });
   }
@@ -55,19 +47,34 @@ export class PublishingHouseComponent implements OnInit, AfterViewInit {
       });
   }
 
-  addPublishingHouse(publishingHouseFormGroup): void {
-    this.dataManipulation.addPublishingHouse(publishingHouseFormGroup.nameCtrl)
-      .subscribe((data) => {
-        this.dataSource.data.push(data);
-        this.dataSource.data = [...this.dataSource.data];
-      });
+  addPublishingHouse(): void {
+    if (this.idCtrl === null) {
+      this.dataManipulation.addPublishingHouse(this.publishingHouseInput.nativeElement.value)
+        .subscribe((data) => {
+          this.dataSource.data.push(data);
+          this.dataSource.data = [...this.dataSource.data];
+          this.publishingHouseInput.nativeElement.value = '';
+        });
+    } else {
+      this.dataManipulation.updatePublishingHouse(this.idCtrl, this.publishingHouseInput.nativeElement.value)
+        .subscribe((data) => {
+          this.dataSource.data.forEach(el => {
+            if (el.id === data.id) {
+              this.dataSource.data.splice(this.dataSource.data.indexOf(el), 1, data);
+            }
+          });
+          this.dataSource.data = [...this.dataSource.data];
+          this.publishingHouseInput.nativeElement.value = '';
+          this.idCtrl = null;
+        });
+    }
   }
 
   deletePublishingHouse(id): void {
     this.dataManipulation.deletePublishingHouse(id)
-      .subscribe((data) => {
+      .subscribe(() => {
         this.dataSource.data.forEach(el => {
-          if (el.name === data.name){
+          if (el.id === id){
             this.dataSource.data.splice(this.dataSource.data.indexOf(el));
           }
         });
@@ -75,16 +82,9 @@ export class PublishingHouseComponent implements OnInit, AfterViewInit {
       });
   }
 
-  updatePublishingHouse(idCtrl, publishingHouseFormGroup): void {
-    this.dataManipulation.updatePublishingHouse(idCtrl, publishingHouseFormGroup.nameCtrl)
-      .subscribe((data) => {
-        this.dataSource.data.forEach(el => {
-          if (el.id === data.id) {
-            this.dataSource.data.splice(this.dataSource.data.indexOf(el), 1, data);
-          }
-        });
-        this.dataSource.data = [...this.dataSource.data];
-      });
+  updatePublishingHouse(element): void {
+    this.publishingHouseInput.nativeElement.value = element.name;
+    this.idCtrl = element.id;
   }
 
   public doFilter(value: string): void {
