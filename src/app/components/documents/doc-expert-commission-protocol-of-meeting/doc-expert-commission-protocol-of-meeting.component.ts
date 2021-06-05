@@ -217,10 +217,19 @@ export class DocExpertCommissionProtocolOfMeetingComponent implements OnInit {
         + this.containsElVersion(this.elVersion),
       isPublicationAStateSecret: publicationAStateSecret,
       doesPubliscationContainServiceInformation: publicationContainServiceInformation,
-      descriptionOfStateSecrectsOrServiceInformation: expertCommissionResultFormGroup.serviceOrSecretInformationCtrl,
+      descriptionOfStateSecrectsOrServiceInformation:
+        this.containsServiceInformation(expertCommissionResultFormGroup.serviceOrSecretInformationCtrl),
       doesCommissionAllowAIssuingOfThePublication: commissionAllowAIssuingOfThePublication,
       chiefOfSecurityDepartment: chiefOfSecurityDepartmentCtrl
     };
+  }
+
+  containsServiceInformation(serviceOrSecretInformation: string): string {
+    if (serviceOrSecretInformation === '') {
+      return ' ';
+    } else {
+      return serviceOrSecretInformation;
+    }
   }
 
   containsElVersion(elVersion: boolean): string {

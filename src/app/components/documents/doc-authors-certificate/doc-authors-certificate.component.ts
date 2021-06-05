@@ -182,7 +182,7 @@ export class DocAuthorsCertificateComponent implements OnInit {
         managerCtrl)).subscribe(
       result => {
         this.filesGeneration.downloadFile(result,
-          'NoteOfAuthors_' + this.auth.user.lastName + '_' + this.auth.user.firstName,
+          'АвторськаДовідка_' + this.auth.user.lastName + '_' + this.auth.user.firstName,
           'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
       });
   }
