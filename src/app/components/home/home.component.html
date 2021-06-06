@@ -3,10 +3,13 @@
   <div class="text-about">
     <h1 class="main-text">Спробуйте легко заповнити та сформувати необхідні документи</h1>
     <p class="text">Працюємо з авторською довідкою, протоколом експертної комісії та актом експертизи</p>
-    <a class="documents" routerLink="/documents/authors-certificate">Перейти до документів</a>
-    <a class="add_data" routerLink="/data-manipulation/degree">Редагувати дані для автозаповнення</a>
+    <div fxLayoutAlign.xs="center center" fxLayout.xs="column">
+      <a class="documents" routerLink="/documents/authors-certificate">Перейти до документів</a>
+      <span fxHide.xs></span>
+      <a class="add_data" routerLink="/data-manipulation/degree">Редагувати дані для автозаповнення</a>
+    </div>
   </div>
-  <div class="logo-home">
+  <div class="logo-home" fxLayoutAlign.xs="center center">
     <img src="assets/img_home.png" alt="home logo">
   </div>
   </div>

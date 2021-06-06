@@ -85,8 +85,8 @@ export class ScientistComponent implements OnInit, AfterViewInit {
     if (this.idCtrl === null) {
       this.dataManipulation.addScientist(
         this.firstNameInput.nativeElement.value,
-        this.firstNameInput.nativeElement.value,
-        this.firstNameInput.nativeElement.value,
+        this.lastNameInput.nativeElement.value,
+        this.middleNameInput.nativeElement.value,
         this.degreesIds.map((degree) => {
           return degree.id;
         }))
