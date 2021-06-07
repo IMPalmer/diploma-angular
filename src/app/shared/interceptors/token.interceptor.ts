@@ -1,10 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  HttpRequest,
-  HttpHandler,
-  HttpEvent,
-  HttpInterceptor
-} from '@angular/common/http';
+import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
 import { Observable, ObservableInput, throwError } from 'rxjs';
 import {catchError, mergeMap} from 'rxjs/operators';
 import { AuthService } from '@services/auth.service';
@@ -37,13 +32,15 @@ export class TokenInterceptor implements HttpInterceptor {
               );
             }
             else if (err.error.message === 'Invalid credintials') {
-              this.snackBarResponse.showSnackBar('No such user exists! Invalid email or password!', null);
+              this.snackBarResponse.showSnackBar(
+                'No such user exists! Invalid email or password!', null);
             }
             break;
           }
           case 400: {
             if (err.error.message === 'Email is already registred'){
-              this.snackBarResponse.showSnackBar('This email is already registered!', null);
+              this.snackBarResponse.showSnackBar(
+                'This email is already registered!', null);
             }
             break;
           }
