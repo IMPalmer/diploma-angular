@@ -210,7 +210,7 @@ export class DocExpertCommissionProtocolOfMeetingComponent implements OnInit {
       membersOfTheCommissionNames: this.membersOfTheCommission,
       speakersOfTheCommissionName: this.speakersOfTheCommission,
       publishingNameWithItsStatics:
-        'навчального посібника «' + materialsFormGroup.titleCtrl + '», '
+        materialsFormGroup.titleCtrl + ', '
         + materialsFormGroup.numberOfPagesCtrl + ' сторінок, '
         + materialsFormGroup.numberOfImagesCtrl + ' рисунків, '
         + materialsFormGroup.numberOfTablesCtrl + ' таблиць, '

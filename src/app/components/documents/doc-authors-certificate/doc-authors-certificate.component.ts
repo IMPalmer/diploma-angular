@@ -197,7 +197,7 @@ export class DocAuthorsCertificateComponent implements OnInit {
       format: 0,
       authors: this.authors,
       publishingNameWithItsStatics:
-        'навчального посібника «' + materialsFormGroup.titleCtrl + '», '
+        materialsFormGroup.titleCtrl + ', '
         + materialsFormGroup.numberOfPagesCtrl + ' сторінок, '
         + materialsFormGroup.numberOfImagesCtrl + ' рисунків, '
         + materialsFormGroup.numberOfTablesCtrl + ' таблиць, '

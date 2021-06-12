@@ -226,7 +226,7 @@ export class DocExpertiseActComponent implements OnInit {
       membersOfTheCommission: this.membersOfTheCommission,
       authorsOfThePublication: this.authors,
       publishingNameWithItsStatics:
-        'навчального посібника «' + materialsFormGroup.titleCtrl + '», '
+        materialsFormGroup.titleCtrl + ', '
         + materialsFormGroup.numberOfPagesCtrl + ' сторінок, '
         + materialsFormGroup.numberOfImagesCtrl + ' рисунків, '
         + materialsFormGroup.numberOfTablesCtrl + ' таблиць, '
