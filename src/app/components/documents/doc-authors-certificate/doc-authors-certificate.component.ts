@@ -203,7 +203,7 @@ export class DocAuthorsCertificateComponent implements OnInit {
         + materialsFormGroup.numberOfTablesCtrl + ' таблиць, '
         + this.containsElVersion(this.elVersion),
       publishingHouse: publishingHouseCtrl,
-      publishingDate: dateFormGroup.dateCtrl.toISOString(),
+      publishingDate: new Date(dateFormGroup.dateCtrl + (new Date().getTimezoneOffset() / 60)),
       universityDepartmentName: universityDepartmentCtrl,
       fullNameOfChiefOfUniversityDepartment: managerCtrl
     };

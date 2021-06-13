@@ -220,7 +220,7 @@ export class DocExpertiseActComponent implements OnInit {
     return {
       format: 0,
       provostName: provostCtrl,
-      actCreationDate: dateFormGroup.dateCtrl.toISOString(),
+      actCreationDate: new Date(dateFormGroup.dateCtrl + (new Date().getTimezoneOffset() / 60)),
       facultyNumber: commissionFormGroup.facultyNumberCtrl,
       headOfTheCommission: headOfTheCommissionCtrl,
       membersOfTheCommission: this.membersOfTheCommission,

@@ -204,7 +204,7 @@ export class DocExpertCommissionProtocolOfMeetingComponent implements OnInit {
       format: 0,
       actCopyNumber: dateFormGroup.actCopyNumberCtrl,
       facultyNumber: commissionFormGroup.facultyNumberCtrl,
-      protocolCreationDate: dateFormGroup.dateCtrl.toISOString(),
+      protocolCreationDate: new Date(dateFormGroup.dateCtrl + (new Date().getTimezoneOffset() / 60)),
       headOfTheCommissionName: headOfTheCommissionCtrl,
       secretaryOfTheCommissionName: secretaryOfTheCommissionCtrl,
       membersOfTheCommissionNames: this.membersOfTheCommission,
