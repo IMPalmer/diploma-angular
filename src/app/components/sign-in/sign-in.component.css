@@ -1,21 +1,35 @@
-mat-form-field{
-  width: 60vmin;
-  margin-top: 0.2rem;
-}
-mat-card-title{
-  font-family: 'slimamif', 'arial', sans-serif;
-  font-weight: bold;
-  text-align: center;
-}
-mat-card{
-  margin-top: 1.5rem;
-}
-img {
-  width: 20%
-}
-.logo-sign-in {
+.sign-in_logo {
   font-family: 'slimamif', 'arial', sans-serif;
   font-weight: bold;
   text-align: center;
   font-size: xx-large;
+}
+img {
+  width: 17vmin
+}
+mat-card {
+  margin-top: 1.5rem;
+}
+mat-form-field {
+  width: 60vmin;
+  margin-top: 0.2rem;
+}
+mat-card-title {
+  font-family: 'slimamif', 'arial', sans-serif;
+  font-weight: bold;
+  text-align: center;
+}
+mat-card-actions {
+  align-content: center;
+}
+button.login {
+  color: white;
+  background: #4E6AF9;
+  border: 1px solid #4E6AF9;
+  border-radius: 10px;
+  margin-left: 1vmin;
+}
+button.login:hover, button.login:active {
+  border: 2px solid #4E6AF9;
+  margin: -1px;
 }

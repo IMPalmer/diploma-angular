@@ -26,6 +26,7 @@ import { DocumentsModule } from '@modules/documents.module';
 import { DocExpertCommissionProtocolOfMeetingComponent } from '@components/documents/doc-expert-commission-protocol-of-meeting/doc-expert-commission-protocol-of-meeting.component';
 import { SpinnerComponent } from '@components/navigation/spinner/spinner.component';
 import {SpinnerInterceptor} from '@interceptors/spinner.interceptor';
+import { UserComponent } from './components/user/user.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import {SpinnerInterceptor} from '@interceptors/spinner.interceptor';
     ScientistComponent,
     DocExpertiseActComponent,
     DocExpertCommissionProtocolOfMeetingComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    UserComponent
   ],
   imports: [
     BrowserModule,

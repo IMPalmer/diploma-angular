@@ -1,0 +1,18 @@
+<app-layout>
+  <div fxLayoutAlign="space-around center" fxLayout="row" fxLayout.xs="column">
+    <div class="user-info" fxLayoutAlign="center start" fxLayout="column" fxLayoutAlign.xs="center center">
+      <img src="assets/love_box.png" alt="love box">
+      <h1 class="full-name">{{currentUser.lastName + ' ' + currentUser.firstName}}</h1>
+      <p class="email">{{currentUser.email}}</p>
+      <p class="create-date">{{creatUserDateTime}}</p>
+    </div>
+    <div fxLayoutAlign="center end" fxLayout="column" fxLayoutAlign.xs="center center">
+      <h2>Список створених файлів: </h2>
+      <table>
+        <tr *ngFor='let file of generatedFiles'>
+          - <td>{{file.name}}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</app-layout>

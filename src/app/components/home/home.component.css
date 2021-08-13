@@ -1,19 +1,13 @@
-.main-text {
+div.about_service {
+  margin: 4vmin 2vmin 1vmin 5vmin;
+}
+h1 {
   font-size: 10vmin;
   line-height: 1em;
   font-weight: bold;
 }
-div.text-about{
-  margin: 4vmin 2vmin 1vmin 5vmin;
-}
-p.text {
+p {
   font-size: medium;
-}
-div.logo-home{
-  margin: 4vmin 5vmin 1vmin 0;
-}
-img {
-  width: 75vmin;
 }
 a.documents {
   text-decoration: none;
@@ -35,8 +29,14 @@ a.add_data {
   margin-left: 9px;
   margin-right: 9px;
 }
-a:hover, a:active{
+a:hover, a:active {
   border: 2px solid #4E6AF9;
   margin-left: 8px;
   margin-right: 8px;
+}
+div.home_logo {
+  margin: 4vmin 5vmin 1vmin 0;
+}
+img {
+  width: 75vmin;
 }

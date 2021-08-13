@@ -10,7 +10,7 @@
   <div fxFlex fxLayout fxLayoutAlign="end" >
     <ul fxLayout fxLayoutGap="15px" class="navigation-items">
       <li>
-        <a class="user" routerLink="">{{currentUser.firstName}}</a>
+        <a class="user" routerLink="/user">{{currentUser.firstName}}</a>
         <a fxHide.xs class="logout" routerLink="" (click)="logoutProcess()">Вийти</a>
       </li>
     </ul>

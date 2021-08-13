@@ -1,16 +1,16 @@
 <app-layout>
   <div fxLayoutAlign="center stretch" fxFlexFill fxLayout.xs="column">
-  <div class="text-about">
-    <h1 class="main-text">Спробуйте легко заповнити та сформувати необхідні документи</h1>
-    <p class="text">Працюємо з авторською довідкою, протоколом експертної комісії та актом експертизи</p>
-    <div fxLayoutAlign.xs="center center" fxLayout.xs="column">
-      <a class="documents" routerLink="/documents/authors-certificate">Перейти до документів</a>
-      <span fxHide.xs></span>
-      <a class="add_data" routerLink="/data-manipulation/degree">Редагувати дані для автозаповнення</a>
+    <div class="about_service">
+      <h1>Спробуйте легко заповнити та сформувати необхідні документи</h1>
+      <p>Працюємо з авторською довідкою, протоколом експертної комісії та актом експертизи</p>
+      <div fxLayoutAlign.xs="space-between center" fxLayout.xs="column">
+        <a class="documents" routerLink="/documents/authors-certificate">Перейти до документів</a>
+        <div fxHide fxShow.xs><br> </div>
+        <a class="add_data" routerLink="/data-manipulation/degree">Редагувати дані для автозаповнення</a>
+      </div>
     </div>
-  </div>
-  <div class="logo-home" fxLayoutAlign.xs="center center">
-    <img src="assets/img_home.png" alt="home logo">
-  </div>
+    <div class="home_logo" fxLayoutAlign.xs="center center">
+      <img src="assets/img_home.png" alt="home logo">
+    </div>
   </div>
 </app-layout>

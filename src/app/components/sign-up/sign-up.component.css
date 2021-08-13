@@ -11,8 +11,17 @@ mat-card {
   margin-top: 1.2rem;
   margin-bottom: 1.2rem;
 }
-button {
+button.sign-up {
   width: 75vmin;
+  color: white;
+  background: #4E6AF9;
+  border: 1px solid #4E6AF9;
+  border-radius: 10px;
+  margin-left: 1vmin;
+}
+button.sign-up:hover, button.sign-up:active {
+  border: 2px solid #4E6AF9;
+  margin: -1px;
 }
 .logo-sign-up {
   font-family: 'slimamif', 'arial', sans-serif;

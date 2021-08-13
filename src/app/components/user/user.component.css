@@ -1,0 +1,12 @@
+img {
+  width: 35vmin;
+}
+div.user-info{
+  padding: 4vmin 2vmin 1vmin 5vmin;
+}
+h1 {
+  font-weight: bold;
+}
+p {
+  color: #a5a5a5;
+}
