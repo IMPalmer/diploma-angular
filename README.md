@@ -9,7 +9,7 @@ Project use third-party API ([Diploma-API](https://github.com/OlehTymoshenko/Dip
 2. Open http://localhost:4200/ in your browser.
 3. Login using email: test@test.com, password: test12345 or sign-up with new user.
 
-![Sign-in](/src/assets/preview_project/screenshot_phone_1.png) ![Home](/src/assets/preview_project/screenshot_phone_2.png) ![Documents](/src/assets/preview_project/screenshot_phone_4.png) ![User](/src/assets/preview_project/screenshot_phone_2.png)
+![Sign-in](/src/assets/preview_project/screenshot_phone_1.png) ![Home](/src/assets/preview_project/screenshot_phone_2.png) ![Documents](/src/assets/preview_project/screenshot_phone_4.png) ![User](/src/assets/preview_project/screenshot_phone_5.png)
 ![Sign-up](/src/assets/preview_project/screenshot_browser_2.png)
 ![Home](/src/assets/preview_project/screenshot_browser_3.png)
 ![Documents](/src/assets/preview_project/screenshot_browser_4.png)
